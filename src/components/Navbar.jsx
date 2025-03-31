@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiMenu } from "react-icons/fi"; // Menu icon for mobile
+import "./Style.css"; // Import your CSS styles
 
 export default function Navbar() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -10,7 +11,7 @@ export default function Navbar() {
   }, [theme]);
 
   return (
-    <div className="navbar bg-[#f8edeb] px-4 md:px-10 flex justify-between">
+    <div className="navbar bg-[#eae0d5] px-4 md:px-22 flex justify-between roboto border border-red-700">
       {/* Logo */}
       <div className="flex">
         <a href="/" className="text-xl font-bold">
@@ -18,41 +19,26 @@ export default function Navbar() {
         </a>
       </div>
 
-      {/* Centered Search Bar */}
-      <div className="flex-grow flex justify-center">
-        <label className="input bg-white/50 rounded-md flex items-center px-3 py-1 shadow-md w-full max-w-md">
-          <svg
-            className="h-5 w-5 opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input
-            type="search"
-            required
-            placeholder="Search"
-            className="bg-transparent outline-none ml-2 w-full"
-          />
-        </label>
-      </div>
-
+      
       {/* Desktop Menu */}
-      <div className="hidden md:flex gap-6">
-        <a href="#browse" className="btn border-none bg-[#ced4da]">
+      <div className="hidden md:flex gap-6  ">
+        <a
+          href="#browse"
+          className="btn border-none text-md font-normal btn-ghost"
+        >
           Browse
         </a>
-        <a href="#about" className="btn border-none bg-[#ced4da]">
+        <a
+          href="#about"
+          className="btn border-none btn-ghost font-normal text-md"
+        >
           About
+        </a>
+        <a
+          href="#about"
+          className="btn border-none btn-ghost font-normal text-md"
+        >
+          Contact Us
         </a>
       </div>
 
