@@ -5,21 +5,21 @@ import heroimage from "../assets/hero2.jpg"; // Replace with your image path
 
 const Hero1 = () => {
   return (
-    <section className="w-full py-12 md:py-20 bg-white bg-gradient-to-r to-slate-50 from-orange-100">
+    <section className="w-full py-12 md:py-20 bg-white to-slate-50 from-orange-100">
       <div className="container mx-auto px-6 md:px-12 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 lg:justify-between ">
         {/* Left Column - Text Content */}
         <div className="max-w-lg text-center lg:text-left space-y-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900">
-            📖 Bite-Sized Stories, <br /> Big-Time Thrills!
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-gray-900">
+            📖 Short Stories, <br /> Big Adventures!
           </h1>
-          <p className="text-lg md:text-xl text-gray-600">
+          <p className="text-lg md:text-2xl text-gray-600">
             Read thrilling, interactive short stories in minutes—crafted for
             your fast-paced life. 🚀
           </p>
           {/* CTA Button */}
           <div className="flex justify-center lg:justify-start">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 text-lg font-semibold rounded-full flex items-center gap-2 shadow-lg transition">
-              🚀 Start Reading <IoIosArrowRoundForward size={28} />
+            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 text-lg font-semibold rounded-full flex items-center gap-2 shadow-lg transition ease-in-out hover:scale-105">
+              🚀 Start Reading <IoIosArrowRoundForward size={32} />
             </button>
           </div>
         </div>

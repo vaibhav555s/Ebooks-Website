@@ -6,15 +6,17 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Navbar1 from "./components/Navbar1";
 import Hero1 from "./components/Hero1";
+import BooksSection from "./components/BooksSection";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <div className="bg-gradient-to-r to-slate-50 from-orange-100">
+      <div className="">
         <Navbar1 />
         <Hero1 />
+        <BooksSection/>
       </div>
     </>
   );

@@ -11,7 +11,7 @@ export default function Navbar() {
   }, [theme]);
 
   return (
-    <div className="navbar bg-[#eae0d5] px-4 md:px-22 flex justify-between roboto border border-red-700">
+    <div className="navbar bg-[#eae0d5] px-4 md:px-22 flex justify-between roboto border border-red-700 sticky top-0 z-50">
       {/* Logo */}
       <div className="flex">
         <a href="/" className="text-xl font-bold">
