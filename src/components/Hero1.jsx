@@ -5,7 +5,7 @@ import heroimage from "../assets/hero2.jpg"; // Replace with your image path
 
 const Hero1 = () => {
   return (
-    <section className="w-full py-12 md:py-20 bg-white">
+    <section className="w-full py-12 md:py-20 bg-white bg-gradient-to-r to-slate-50 from-orange-100">
       <div className="container mx-auto px-6 md:px-12 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 lg:justify-between ">
         {/* Left Column - Text Content */}
         <div className="max-w-lg text-center lg:text-left space-y-10">

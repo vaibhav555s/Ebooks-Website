@@ -12,8 +12,10 @@ function App() {
 
   return (
     <>
-      <Navbar1/>
-      <Hero1/>
+      <div className="bg-gradient-to-r to-slate-50 from-orange-100">
+        <Navbar1 />
+        <Hero1 />
+      </div>
     </>
   );
 }
