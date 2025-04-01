@@ -1,4 +1,5 @@
 import React from "react";
+import { Search, Globe, MessageCircle, Tag } from "lucide-react"
 // import Image from "";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import heroimage from "../assets/hero2.jpg"; // Replace with your image path
@@ -21,6 +22,33 @@ const Hero1 = () => {
             <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 text-lg font-semibold rounded-full flex items-center gap-2 shadow-lg transition ease-in-out hover:scale-105">
               🚀 Start Reading <IoIosArrowRoundForward size={32} />
             </button>
+          </div>
+          {/* Features */}
+          <div className="flex flex-wrap gap-6 pt-4">
+            <div className="flex items-center gap-2">
+              <div className="bg-orange-100 p-2 rounded-full">
+                <Globe className="h-4 w-4 text-orange-500" />
+              </div>
+              <span className="text-sm text-gray-600">
+                Over 2000 travel offers
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="bg-purple-100 p-2 rounded-full">
+                <MessageCircle className="h-4 w-4 text-purple-500" />
+              </div>
+              <span className="text-sm text-gray-600">
+                Advice from our experts
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="bg-pink-100 p-2 rounded-full">
+                <Tag className="h-4 w-4 text-pink-500" />
+              </div>
+              <span className="text-sm text-gray-600">
+                Best prices & special deals
+              </span>
+            </div>
           </div>
         </div>
 

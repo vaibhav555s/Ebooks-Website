@@ -18,7 +18,7 @@ export default function StoryReader1() {
         Back
       </button>
       <h1>{book.title}</h1>
-      <div>{book.content}</div>
+      <div>{book.story}</div>
     </div>
   );
 }
