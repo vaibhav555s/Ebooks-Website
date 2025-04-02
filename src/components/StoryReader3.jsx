@@ -308,7 +308,7 @@ export default function StoryReader() {
 
           {/* Story Content */}
           <motion.div
-            className="space-y-6 text-lg leading-relaxed"
+            className="space-y-6 text-lg leading-relaxed text-justify md:text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.8, duration: 1 }}

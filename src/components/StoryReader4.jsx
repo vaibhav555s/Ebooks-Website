@@ -19,7 +19,7 @@ export default function StoryReader() {
   const navigate = useNavigate();
   const book = booksData.find((b) => b.id === Number.parseInt(id));
   const [progress, setProgress] = useState(0);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
@@ -198,7 +198,7 @@ export default function StoryReader() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             <motion.button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               className={`p-3 rounded-full ${
                 darkMode
                   ? "bg-slate-800/80 text-white hover:bg-slate-700/80"
@@ -465,6 +465,7 @@ export default function StoryReader() {
 
       {/* Story Content */}
       <div className="flex flex-col items-center justify-center min-h-screen p-6 py-20">
+        
         <motion.div
           ref={contentRef}
           initial={{ y: 50, opacity: 0 }}
@@ -516,9 +517,12 @@ export default function StoryReader() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 style={{
+                  WebkitTextStroke: darkMode
+                    ? "0.5px rgba(79, 70, 229, 1.5)"
+                    : "0.5px rgba(251, 191, 36, 1.5)",
                   textShadow: darkMode
-                    ? "0 0 20px rgba(79, 70, 229, 0.3)"
-                    : "0 0 20px rgba(251, 191, 36, 0.3)",
+                    ? "0 0 4px rgba(79, 70, 229, 1.5)"
+                    : "0 0 4px rgba(251, 191, 36, 1.5)",
                 }}
               >
                 <div className="relative">
@@ -556,7 +560,7 @@ export default function StoryReader() {
 
           {/* AI Voice Narration Button */}
           <motion.button
-            className={`mb-10 px-6 py-3 rounded-full flex items-center justify-center gap-2 mx-auto ${
+            className={`mb-10 px-6 py-3 rounded-full flex items-center justify-center gap-2 mx-auto btn btn-disabled ${
               darkMode
                 ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
                 : "bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-white"
@@ -578,7 +582,7 @@ export default function StoryReader() {
                 fontFamily === "serif" ? "font-serif" : "font-sans"
               }`}
             >
-              Play Narration
+              Play Narration (Coming Soon)
             </span>
           </motion.button>
 
@@ -627,7 +631,7 @@ export default function StoryReader() {
                   }}
                   className={`${
                     darkMode ? "text-gray-200" : "text-gray-800"
-                  } tracking-wide leading-relaxed ${
+                  } tracking-wide leading-relaxed  ${
                     fontFamily === "serif" ? "font-serif" : "font-sans"
                   } ${
                     index === 0

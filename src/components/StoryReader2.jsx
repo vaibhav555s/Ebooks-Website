@@ -6,6 +6,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { FaVolumeUp, FaSun, FaMoon } from "react-icons/fa";
 // import useSound from "use-sound";
 // import pageFlipSound from "../assets/page-flip.mp3";
+import "./StoryReader.css"
 
 export default function StoryReader2() {
   const { id } = useParams();
