@@ -9,35 +9,7 @@ export const booksData = [
     author: "F. Scott Fitzgerald",
     desc: "A classic novel of the Jazz Age, The Great Gatsby tells the story of Jay Gatsby's unrequited love for Daisy Buchanan.",
     image: img1,
-    story: `It was past midnight when Aarav boarded the last local train home. The compartment was nearly empty, except for an old man sitting by the window, staring blankly outside.
-
-Aarav took a seat across from him. The train moved forward with a rhythmic clatter, and he pulled out his phone to kill time. The old man suddenly turned to him.
-
-"Are you sure you’re on the right train?" he asked in a raspy voice.
-
-Aarav chuckled nervously. "Yeah, this is the last train to Ambernath, right?"
-
-The old man nodded slowly but didn’t say anything else. Something about his gaze made Aarav uneasy. He decided to ignore him and focused on his phone.
-
-A few minutes later, the train entered a dark tunnel. The lights flickered for a moment before going out completely. The compartment was plunged into pitch-black darkness.
-
-Aarav felt a sudden shift in the air—like someone was moving. A faint whisper echoed through the compartment, but he couldn’t make out the words.
-
-When the train emerged from the tunnel, the lights came back on. Aarav blinked.
-
-The old man was gone.
-
-The seat where he had been sitting was now covered in dust, as if no one had sat there for years. Aarav's heart pounded. He quickly looked around, but the compartment was empty.
-
-The train pulled into the next station. The digital display flickered, showing something that sent chills down his spine:
-
-"Last stop: The Departed."
-
-Aarav scrambled to his feet, his breath shaky. The doors slid open with a hiss. He hesitated—should he step out or stay on the train?
-
-Then, in the reflection of the window, he saw it.
-
-The old man was sitting right beside him. Smiling.`,
+    story: `In the heart of Eldoria, nestled between towering peaks and whispering valleys, lay the Enigmatic Forest. Its ancient trees, their gnarled branches reaching towards the heavens, held secrets untold. Legends spoke of mystical creatures, hidden pathways, and a source of unimaginable power concealed within its depths.\n\nElara, a young and courageous herbalist, had always been drawn to the forest's allure. She had heard the tales, felt the whispers of the wind carrying ancient knowledge, and yearned to uncover the truth that lay hidden beneath the emerald canopy.\n\nOne fateful morning, as the first rays of sunlight pierced through the leaves, Elara ventured into the Enigmatic Forest. With her trusty satchel filled with herbs and a heart full of determination, she embarked on a journey that would test her courage, challenge her beliefs, and forever change her destiny.\n\nAs she delved deeper into the forest's embrace, Elara encountered creatures of myth and legend. Playful sprites danced among the flowers, wise old ents shared their ancient wisdom, and mischievous goblins led her astray with their riddles and tricks.\n\nBut the forest was not without its dangers. Shadowy beasts lurked in the darkness, their eyes gleaming with malevolent intent. Treacherous traps lay hidden beneath the fallen leaves, waiting to ensnare the unwary traveler. And a dark force, known only as the Shadow Lord, sought to corrupt the forest's power for his own sinister purposes.\n\nWith each challenge she faced, Elara grew stronger, wiser, and more determined to protect the Enigmatic Forest from the encroaching darkness. She learned to trust her instincts, to rely on her knowledge of herbs and nature, and to embrace the power that lay dormant within her.\n\nIn a climactic battle against the Shadow Lord, Elara unleashed her full potential, harnessing the forest's energy to banish the darkness and restore balance to the land. The Enigmatic Forest rejoiced, its trees swaying in gratitude, its creatures singing her praises.\n\nElara returned to her village a hero, forever bound to the Enigmatic Forest. She became its guardian, its protector, and its voice, ensuring that its secrets would be preserved for generations to come. And so, the legend of Elara, the herbalist who saved the Enigmatic Forest, lived on, inspiring others to embrace their courage, trust their instincts, and protect the wonders of the natural world.`,
   },
   {
     id: 2,

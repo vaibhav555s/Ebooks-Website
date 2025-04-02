@@ -3,6 +3,8 @@ import Navbar1 from "./components/Navbar1";
 import Hero1 from "./components/Hero1";
 import BooksSection from "./components/BooksSection";
 import StoryReader1 from "./components/StoryReader1";
+import StoryReader2 from "./components/StoryReader2";
+import StoryReader3 from "./components/StoryReader3";
 
 function App() {
   return (
@@ -23,7 +25,7 @@ function App() {
           element={
             <>
               <Navbar1 />
-              <StoryReader1 />
+              <StoryReader3 />
             </>
           }
         />
