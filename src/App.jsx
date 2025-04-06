@@ -9,6 +9,7 @@ import StoryReader1 from "./components/StoryReader1";
 import StoryReader2 from "./components/StoryReader2";
 import StoryReader3 from "./components/StoryReader3";
 import StoryReader4 from "./components/StoryReader4";
+import Feedback from "./components/FeedbackSection";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Navbar2 />
               <Hero2 />
               <BooksSection1 />
+              <Feedback />
             </>
           }
         />
