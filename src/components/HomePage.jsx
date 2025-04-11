@@ -62,7 +62,7 @@ function LoadingScreen() {
           className="w-24 h-24 rounded-full border-t-4 border-l-4 border-orange-500 dark:border-orange-400"
           animate={{ rotate: 360 }}
           transition={{
-            duration: 1.5,
+            duration: 0.4,
             repeat: Number.POSITIVE_INFINITY,
             ease: "linear",
           }}
@@ -71,11 +71,11 @@ function LoadingScreen() {
           className="absolute inset-0 flex items-center justify-center"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: [0.8, 1.2, 1], opacity: [0, 1, 1] }}
-          transition={{ duration: 1, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400">
+          {/* <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400">
             SW
-          </span>
+          </span> */}
         </motion.div>
         <motion.p
           className="mt-4 text-zinc-600 dark:text-zinc-300 text-sm"

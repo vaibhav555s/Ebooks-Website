@@ -36,9 +36,8 @@ export default function Navbar() {
 
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/library", label: "Library" },
-    { href: "/reader", label: "Reader" },
     { href: "/about", label: "About" },
+    { href: "/about", label: "Contact Us" },
   ];
 
   return (
@@ -90,7 +89,7 @@ export default function Navbar() {
             </motion.div>
           ))}
 
-          {mounted && (
+          {/* {mounted && (
             <motion.button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-zinc-800 text-zinc-300 hover:text-white transition-colors duration-300 glow-border-orange"
@@ -102,9 +101,9 @@ export default function Navbar() {
             >
               <AnimatedThemeIcon theme={theme} />
             </motion.button>
-          )}
-
-          <motion.button
+          )} */}
+          {/* Sign in button */}
+          {/* <motion.button
             className="ml-2 px-5 py-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all duration-300 glow-border-orange"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,12 +112,12 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             Sign In
-          </motion.button>
+          </motion.button> */}
         </nav>
 
         {/* Mobile Nav */}
         <div className="md:hidden flex items-center gap-2">
-          {mounted && (
+          {/* {mounted && (
             <motion.button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-zinc-800 text-zinc-300 hover:text-white transition-colors duration-300"
@@ -127,7 +126,7 @@ export default function Navbar() {
             >
               <AnimatedThemeIcon theme={theme} />
             </motion.button>
-          )}
+          )} */}
 
           <motion.button
             className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-800 text-zinc-300 hover:text-white transition-colors duration-300"
@@ -186,7 +185,7 @@ export default function Navbar() {
               )}
             </motion.div>
           ))}
-          <motion.button
+          {/* <motion.button
             className="mt-2 w-full py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all duration-300"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -194,7 +193,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             Sign In
-          </motion.button>
+          </motion.button> */}
         </nav>
       </motion.div>
     </header>

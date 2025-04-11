@@ -47,7 +47,7 @@ export default function FeedbackRatingSlider({ value = 5, onChange }) {
     >
       <div className="relative bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-lg">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-zinc-900 dark:text-white">
-          How would you rate this eBook concept for Gen Z readers?
+          How would you overall rate this eBook concept for Gen Z readers?
         </h2>
 
         <div className="flex flex-col items-center mb-10">
@@ -142,6 +142,9 @@ export default function FeedbackRatingSlider({ value = 5, onChange }) {
               {num}
             </motion.button>
           ))}
+        </div>
+        <div className="mt-6">
+          <p className="text-center">(Click on the numbers)</p>
         </div>
       </div>
     </motion.div>

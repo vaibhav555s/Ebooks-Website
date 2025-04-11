@@ -96,8 +96,9 @@ export default function FeedbackSection() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 py-16 overflow-hidden"
+      className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 py-16 overflow-hidden space-y-20"
       id="feedback"
+      
     >
       {/* Background Elements with Parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -176,7 +177,11 @@ export default function FeedbackSection() {
 
         </div>
       )}
+
+      <div> 
+
           <RoadmapTimeline />
+      </div>
     </div>
   );
 }

@@ -25,19 +25,7 @@ const formatOptions = [
       "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
     patternSize: "10px 10px",
   },
-  {
-    id: "flash",
-    title: "Flash Fiction",
-    description: "1 min reads",
-    icon: <Zap className="w-6 h-6" />,
-    color: "from-orange-500 to-amber-500 dark:from-orange-400 to-amber-400",
-    bgColor: "bg-orange-50 dark:bg-orange-900/20",
-    textColor: "text-orange-700 dark:text-orange-300",
-    borderColor: "border-orange-200 dark:border-orange-800",
-    pattern:
-      "linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)",
-    patternSize: "10px 10px",
-  },
+  
   {
     id: "series",
     title: "Chapter Series",
@@ -51,19 +39,19 @@ const formatOptions = [
       "repeating-linear-gradient(0deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 1px, transparent 1px, transparent 6px)",
     patternSize: "6px 6px",
   },
-  {
-    id: "visual",
-    title: "Visual Stories",
-    description: "Image-rich content",
-    icon: <ImageIcon className="w-6 h-6" />,
-    color: "from-rose-500 to-orange-500 dark:from-rose-400 to-orange-400",
-    bgColor: "bg-rose-50 dark:bg-rose-900/20",
-    textColor: "text-rose-700 dark:text-rose-300",
-    borderColor: "border-rose-200 dark:border-rose-800",
-    pattern:
-      "repeating-radial-gradient(rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 100%)",
-    patternSize: "10px 10px",
-  },
+  // {
+  //   id: "visual",
+  //   title: "Visual Stories",
+  //   description: "Image-rich content",
+  //   icon: <ImageIcon className="w-6 h-6" />,
+  //   color: "from-rose-500 to-orange-500 dark:from-rose-400 to-orange-400",
+  //   bgColor: "bg-rose-50 dark:bg-rose-900/20",
+  //   textColor: "text-rose-700 dark:text-rose-300",
+  //   borderColor: "border-rose-200 dark:border-rose-800",
+  //   pattern:
+  //     "repeating-radial-gradient(rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 100%)",
+  //   patternSize: "10px 10px",
+  // },
   {
     id: "audio",
     title: "Audio Stories",
@@ -77,19 +65,19 @@ const formatOptions = [
       "linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)",
     patternSize: "10px 10px",
   },
-  {
-    id: "interactive",
-    title: "Interactive",
-    description: "Branching narratives",
-    icon: <GitBranch className="w-6 h-6" />,
-    color: "from-orange-500 to-rose-500 dark:from-orange-400 to-rose-400",
-    bgColor: "bg-orange-50 dark:bg-orange-900/20",
-    textColor: "text-orange-700 dark:text-orange-300",
-    borderColor: "border-orange-200 dark:border-orange-800",
-    pattern:
-      "repeating-linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 1px, transparent 1px, transparent 6px)",
-    patternSize: "8px 8px",
-  },
+  // {
+  //   id: "interactive",
+  //   title: "Interactive",
+  //   description: "Branching narratives",
+  //   icon: <GitBranch className="w-6 h-6" />,
+  //   color: "from-orange-500 to-rose-500 dark:from-orange-400 to-rose-400",
+  //   bgColor: "bg-orange-50 dark:bg-orange-900/20",
+  //   textColor: "text-orange-700 dark:text-orange-300",
+  //   borderColor: "border-orange-200 dark:border-orange-800",
+  //   pattern:
+  //     "repeating-linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 1px, transparent 1px, transparent 6px)",
+  //   patternSize: "8px 8px",
+  // },
 ];
 
 export default function FormatPreferencesGrid({ selected = [], onChange }) {
