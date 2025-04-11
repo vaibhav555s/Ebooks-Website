@@ -1,224 +1,252 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Globe, MessageCircle, Tag } from "lucide-react";
-import { IoIosArrowRoundForward } from "react-icons/io";
-import heroimage from "../assets/hero2.jpg"; // Replace with your image path
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { BookOpen, ArrowRight } from "lucide-react";
+import {Link} from "react-router-dom";
 
-const Hero2 = () => {
-  const imageRef = useRef(null);
+export default function Hero() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-  // 3D tilt effect for the image
-  useEffect(() => {
-    const image = imageRef.current;
-    if (!image) return;
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-    const handleMouseMove = (e) => {
-      const { left, top, width, height } = image.getBoundingClientRect();
-      const x = (e.clientX - left) / width - 0.5;
-      const y = (e.clientY - top) / height - 0.5;
-
-      image.style.transform = `perspective(1000px) rotateY(${
-        x * 10
-      }deg) rotateX(${y * -10}deg) scale3d(1.05, 1.05, 1.05)`;
-    };
-
-    const handleMouseLeave = () => {
-      image.style.transform =
-        "perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)";
-    };
-
-    image.addEventListener("mousemove", handleMouseMove);
-    image.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      image.removeEventListener("mousemove", handleMouseMove);
-      image.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
+  // Create particles
+  const particles = Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 2,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * 5,
+  }));
 
   return (
-    <section className="w-full py-16 md:py-24 bg-gradient-to-b from-orange-50 to-white overflow-hidden">
-      {/* Top Wave SVG */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-          className="w-full h-auto"
-        >
-          <path
-            fill="#FFF7ED"
-            fillOpacity="0.3"
-            d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
-          ></path>
-        </svg>
-      </div>
+    <section
+      ref={containerRef}
+      className="relative min-h-screen flex items-center overflow-hidden py-20"
+    >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950"></div>
 
-      <div className="container mx-auto px-6 md:px-12 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20 lg:justify-between relative z-10">
-        {/* Left Column - Text Content */}
+        {/* Paper texture */}
+        <div className="absolute inset-0 paper-texture opacity-10"></div>
+
+        {/* Glowing orbs */}
         <motion.div
-          className="max-w-lg text-center lg:text-left space-y-10"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <motion.h1
-            className="text-4xl md:text-6xl font-extrabold leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block mb-2">📖</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500">
-              Short Stories, <br /> Big Adventures!
-            </span>
-          </motion.h1>
+          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-orange-500/10 blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.2, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "reverse",
+          }}
+          style={{ y }}
+        />
 
-          <motion.p
-            className="text-lg md:text-2xl text-gray-600"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Read thrilling, interactive short stories in minutes—crafted for
-            your fast-paced life. 🚀
-          </motion.p>
-
-          {/* CTA Button */}
-          <motion.div
-            className="flex justify-center lg:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <motion.button
-              className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-4 text-lg font-semibold rounded-full flex items-center gap-2 shadow-lg"
-              whileHover={{
-                scale: 1.05,
-                boxShadow:
-                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="relative z-10">🚀 Start Reading</span>
-              <IoIosArrowRoundForward size={32} className="relative z-10" />
-
-              {/* Ripple effect */}
-              <span className="absolute top-0 left-0 w-full h-full bg-white opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
-            </motion.button>
-          </motion.div>
-
-          {/* Features */}
-          <motion.div
-            className="flex flex-wrap justify-center lg:justify-start gap-6 pt-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            {[
-              {
-                bg: "bg-orange-100",
-                icon: <Globe className="h-4 w-4 text-orange-500" />,
-                text: "Over 2000 travel offers",
-              },
-              {
-                bg: "bg-purple-100",
-                icon: <MessageCircle className="h-4 w-4 text-purple-500" />,
-                text: "Advice from our experts",
-              },
-              {
-                bg: "bg-pink-100",
-                icon: <Tag className="h-4 w-4 text-pink-500" />,
-                text: "Best prices & special deals",
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="flex items-center gap-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className={`${feature.bg} p-2 rounded-full shadow-sm`}>
-                  {feature.icon}
-                </div>
-                <span className="text-sm font-medium text-gray-600">
-                  {feature.text}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* Right Column - Image */}
         <motion.div
-          className="relative w-full max-w-md lg:max-w-lg"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <motion.div
-            className="absolute -top-6 -left-6 w-16 h-16 bg-orange-100 rounded-full"
-            animate={{
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, 0],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute -bottom-6 -right-6 w-12 h-12 bg-cyan-100 rounded-full"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, -5, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-              delay: 0.5,
-            }}
-          />
+          className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-pink-500/10 blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "reverse",
+            delay: 1,
+          }}
+          style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]) }}
+        />
 
-          <div
-            ref={imageRef}
-            className="relative overflow-hidden rounded-lg shadow-2xl transition-all duration-200 ease-out"
+        {/* Floating particles */}
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full bg-white"
             style={{
-              transformStyle: "preserve-3d",
-              transition: "transform 0.3s ease-out",
+              width: particle.size,
+              height: particle.size,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              opacity: 0.1,
             }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-pink-500/10 z-10 rounded-lg"></div>
-            <img
-              src={heroimage || "/placeholder.svg"}
-              alt="Ebook Illustration"
-              className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg"
-            />
-          </div>
-        </motion.div>
+            animate={{
+              y: [0, -30, 0],
+              x: [0, particle.id % 2 === 0 ? 10 : -10, 0],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: particle.delay,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Bottom Wave SVG */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden transform rotate-180">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-          className="w-full h-auto"
-        >
-          <path
-            fill="#FFF7ED"
-            fillOpacity="0.3"
-            d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
-          ></path>
-        </svg>
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{ opacity }}
+          >
+            {/* <motion.div
+              className="inline-block mb-4 p-2 rounded-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-700"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <span className="px-4 py-1 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium">
+                Immersive Reading Experience
+              </span>
+            </motion.div> */}
+
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 glow-text-orange">
+                Stories that transport you
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="text-xl md:text-2xl text-zinc-300 mb-8 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              Dive into captivating short stories designed for the modern
+              reader. Experience immersive narratives in a sleek,
+              distraction-free environment.
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <Link
+                to="/"
+                onClick={(e) => {
+                  e.preventDefault(); // stop actual route navigation
+                  const booksSection = document.getElementById("books");
+                  if (booksSection) {
+                    booksSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <motion.button
+                  className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-lg shadow-lg flex items-center gap-2 glow-border-orange"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 0 15px rgba(249, 115, 22, 0.5)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <BookOpen className="w-5 h-5" />
+                  <span>Start Reading</span>
+                </motion.button>
+              </Link>
+
+              <Link
+                to="/"
+                onClick={(e) => {
+                  e.preventDefault(); // stop actual route navigation
+                  const booksSection = document.getElementById("books");
+                  if (booksSection) {
+                    booksSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <motion.button
+                  className="px-8 py-4 rounded-full bg-zinc-800 text-white font-medium text-lg shadow-md border border-zinc-700 flex items-center gap-2 hover:bg-zinc-700 transition-colors duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>Explore Library</span>
+                  <ArrowRight className="w-5 h-5" />
+                </motion.button>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Floating book illustration */}
+          <motion.div
+            className="relative mx-auto w-full max-w-2xl aspect-[16/9] glass rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+            style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "20%"]) }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-zinc-950"></div>
+
+            {/* Book pages effect */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <motion.div
+                className="w-3/4 h-3/4 bg-zinc-800 rounded-lg shadow-lg overflow-hidden"
+                animate={{
+                  rotateY: [0, 5, 0],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "reverse",
+                }}
+              >
+                <div className="h-full w-full p-6 flex flex-col">
+                  <div className="w-full h-2 bg-orange-500/20 rounded-full mb-4"></div>
+                  <div className="w-3/4 h-2 bg-pink-500/20 rounded-full mb-6"></div>
+
+                  {/* Text lines */}
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-full h-1.5 bg-white/10 rounded-full mb-3"
+                      style={{ width: `${Math.random() * 30 + 70}%` }}
+                    ></div>
+                  ))}
+
+                  {/* Glowing cursor */}
+                  <motion.div
+                    className="w-1 h-4 bg-orange-500 rounded-full mt-2 glow-border-orange"
+                    animate={{
+                      opacity: [1, 0, 1],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Number.POSITIVE_INFINITY,
+                    }}
+                  ></motion.div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-4 right-4 flex gap-2">
+              <div className="w-3 h-3 rounded-full bg-zinc-700"></div>
+              <div className="w-3 h-3 rounded-full bg-zinc-700"></div>
+              <div className="w-3 h-3 rounded-full bg-orange-500 glow-border-orange"></div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default Hero2;
+}

@@ -1,43 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar1 from "./components/Navbar1";
-import Navbar2 from "./components/Navbar2";
-import Hero1 from "./components/Hero1";
-import Hero2 from "./components/Hero2";
-import BooksSection from "./components/BooksSection";
-import BooksSection1 from "./components/BooksSection1";
-import StoryReader1 from "./components/StoryReader1";
-import StoryReader2 from "./components/StoryReader2";
-import StoryReader3 from "./components/StoryReader3";
+import HomePage from "./components/HomePage"; // <-- if you placed the v0 layout here
 import StoryReader4 from "./components/StoryReader4";
-import Feedback from "./components/FeedbackSection";
+import AboutPage from "./components/AboutPage";
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Navbar2 />
-              <Hero2 />
-              <BooksSection1 />
-              <Feedback />
-            </>
-          }
-        />
-        <Route
-          path="/story/:id"
-          element={
-            <>
-              {/* <Navbar1 /> */}
-              <StoryReader4 />
-            </>
-          }
-        />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/story/:id" element={<StoryReader4 />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </Router>
   );
 }
-
-export default App;
