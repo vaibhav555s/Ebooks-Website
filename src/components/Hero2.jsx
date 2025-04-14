@@ -133,7 +133,7 @@ export default function Hero() {
             >
               Dive into captivating short stories designed for the modern
               reader. Experience immersive narratives in a sleek,
-              distraction-free environment.
+              distraction-free environment
             </motion.p>
 
             <motion.div
