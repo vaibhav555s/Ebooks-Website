@@ -19,23 +19,22 @@ export default function RoadmapTimeline() {
       title: "A Gen Z-first story universe",
       timeline: "Q3 2023",
       description:
-        "Building a platform that resonates with Gen Z storytelling preferences and aesthetics.",
+        "A platform designed for Gen Z storytelling vibes and aesthetic.",
     },
     {
       id: "publishing",
       icon: "📲",
-      title: "Anyone can publish 3-5 page eBooks",
+      title: "Publish tiny eBooks",
       timeline: "Q4 2023",
       description:
-        "Democratizing storytelling with easy-to-use publishing tools for short-form content.",
+        "Easy tools for anyone to create and share 3-5 page stories.",
     },
     {
       id: "social",
       icon: "🧑‍🤝‍🧑",
-      title: "Build your followers & fans",
+      title: "Grow Your Audience",
       timeline: "Q1 2024",
-      description:
-        "Creating a community where storytellers can build an audience and connect with readers.",
+      description: "Build your follower base and connect with fans..",
     },
     {
       id: "rewards",
@@ -48,17 +47,16 @@ export default function RoadmapTimeline() {
     {
       id: "audio",
       icon: "🎤",
-      title: "AI voices to narrate your stories",
+      title: "AI Voice Narration",
       timeline: "Q3 2024",
-      description: "Bringing stories to life with customizable AI narration.",
+      description: "Let customizable AI voices bring your stories to life.",
     },
     {
       id: "experience",
       icon: "🌙",
       title: "Dark mode, vibe-based filters & interactive animations",
       timeline: "Q4 2024",
-      description:
-        "Enhancing the reading experience with personalized visual preferences and interactions.",
+      description: "	Dark mode, mood filters, and interactive animations.",
     },
   ];
 

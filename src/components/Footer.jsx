@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Github, Linkedin, Mail, Twitter } from "lucide-react";
-import { useTheme } from "next-themes";
+import { BookOpen, Github, Instagram, Linkedin, Mail, Twitter } from "lucide-react";
+// import { useTheme } from "next-themes";
 
 export default function Footer() {
-  const { theme } = useTheme();
+  const theme = "dark";
 
   return (
     <footer className="relative bg-orange-50 dark:bg-zinc-900 pt-16 pb-8 overflow-hidden">
@@ -52,14 +52,14 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex gap-4"
             >
-              <a
+              {/* <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
               >
                 <Twitter size={18} />
-              </a>
+              </a> */}
               <a
                 href="https://github.com"
                 target="_blank"
@@ -73,6 +73,12 @@ export default function Footer() {
                 className="p-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
               >
                 <Mail size={18} />
+              </a>
+              <a
+                href="https://www.instagram.com/vaibhavsonawane_05/#"
+                className="p-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
+              >
+                <Instagram size={18} />
               </a>
             </motion.div>
           </div>
@@ -93,7 +99,7 @@ export default function Footer() {
               storytelling and technology.
             </p>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/vaibhavsonawane1"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
@@ -120,7 +126,7 @@ export default function Footer() {
             </p>
             <div className="flex flex-col gap-2">
               <a
-                href="#feedback-form"
+                href="/"
                 className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-300"
               >
                 <span>Share Feedback</span>
@@ -140,7 +146,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="mailto:ideas@storywave.com"
+                href="mailto:vaibhavsonawane2345@gmail.com"
                 className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-300"
               >
                 <span>Submit Story Ideas</span>

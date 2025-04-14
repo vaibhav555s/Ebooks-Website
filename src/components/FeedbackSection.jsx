@@ -12,10 +12,12 @@ import FeedbackCanvas from "./feedback-canvas";
 import SubmitExperience from "./submit-experience";
 import RoadmapTimeline from "./roadmap-timeline";
 // import { useToast } from "@/components/ui/use-toast";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
+import { db } from "../../firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function FeedbackSection() {
-  const { theme } = useTheme();
+  const theme = "dark";
   // const { toast } = useToast();
   const [scrollY, setScrollY] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -63,35 +65,66 @@ export default function FeedbackSection() {
     }));
   };
 
+
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
 
     try {
-      // Simulate Google Sheets API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Send feedbackData to Firestore
+      await addDoc(collection(db, "feedback"), feedbackData);
 
-      // In a real implementation, you would send data to your backend
-      // which would then use Google Sheets API to store the data
-      console.log("Feedback submitted to Google Sheets:", feedbackData);
-
+      console.log("✅ Feedback submitted to Firebase:", feedbackData);
       setIsSubmitted(true);
-      // toast({
-      //   title: "Feedback submitted!",
-      //   description: "Thanks for helping shape StoryWave's future.",
-      //   variant: "default",
-      // });
+
+      // Optional: trigger confetti
+      const canvas = document.createElement("canvas");
+      canvas.style.position = "fixed";
+      canvas.style.inset = "0";
+      canvas.style.width = "100vw";
+      canvas.style.height = "100vh";
+      canvas.style.zIndex = "999";
+      canvas.style.pointerEvents = "none";
+      document.body.appendChild(canvas);
+
+      const myConfetti = confetti.create(canvas, {
+        resize: true,
+        useWorker: true,
+      });
+
+      myConfetti({
+        particleCount: 100,
+        spread: 160,
+        origin: { y: 0.6 },
+        colors: ["#f97316", "#f59e0b", "#ec4899", "#f43f5e", "#fb923c"],
+      });
+
+      setTimeout(() => {
+        document.body.removeChild(canvas);
+      }, 3000);
     } catch (error) {
-      console.error("Error submitting feedback:", error);
-      // toast({
-      //   title: "Submission failed",
-      //   description:
-      //     "Please try again. If the problem persists, contact support.",
-      //   variant: "destructive",
-      // });
+      console.error("🚨 Error submitting feedback:", error.message, error.code);
+
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const testData = {
+  message: "Test feedback",
+  timestamp: new Date(),
+};
+
+try {
+  const docRef = addDoc(collection(db, "feedbacks"), testData);
+  console.log("Test document written with ID:", docRef.id);
+} catch (error) {
+  console.error("Error writing document:", error);
+}
+
+
+
 
   return (
     <div

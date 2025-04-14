@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 
 const emotions = [
   {
@@ -50,7 +50,7 @@ const emotions = [
 ];
 
 export default function EmotionFeedbackSlider({ value = 3, onChange }) {
-  const { theme } = useTheme();
+  const  theme  = "dark";
   const [selectedEmotion, setSelectedEmotion] = useState(value);
   const [particles, setParticles] = useState([]);
 

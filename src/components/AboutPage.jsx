@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
-import { Github, Linkedin, Mail, Phone, MapPin, Send, ExternalLink, Award, Calendar, Code } from 'lucide-react'
+import { Github, Linkedin, Mail, Phone, MapPin, Send, ExternalLink, Award, Calendar, Code, Instagram } from 'lucide-react'
 import Navbar from "./Navbar3"
 import Footer from "./Footer"
 import SkillsGalaxy from "./skills-galaxy"
@@ -10,7 +10,7 @@ import {Link} from "react-router-dom"
 
 export default function AboutPage() {
   const containerRef = useRef(null)
-  const [activeTab, setActiveTab] = useState("skills")
+  const [activeTab, setActiveTab] = useState("experience")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -319,7 +319,7 @@ export default function AboutPage() {
                 {/* Contact links */}
                 <div className="flex flex-wrap gap-4 pt-4">
                   <motion.a
-                    href="https://github.com"
+                    href="https://github.com/vaibhav555s"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-2 rounded-full glass border border-zinc-700 flex items-center gap-2 hover:border-orange-500 transition-colors duration-300 group"
@@ -334,7 +334,7 @@ export default function AboutPage() {
                   </motion.a>
 
                   <motion.a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/vaibhavsonawane1/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-2 rounded-full glass border border-zinc-700 flex items-center gap-2 hover:border-orange-500 transition-colors duration-300 group"
@@ -851,6 +851,19 @@ export default function AboutPage() {
                             whileTap={{ scale: 0.95 }}
                           >
                             <Mail
+                              size={20}
+                              className="text-zinc-400 group-hover:text-orange-500 transition-colors duration-300"
+                            />
+                          </motion.a>
+                          <motion.a
+                            href="https://www.instagram.com/vaibhavsonawane_05/#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 rounded-full glass border border-zinc-700 flex items-center justify-center hover:border-orange-500 transition-colors duration-300 group"
+                            whileHover={{ y: -5, scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <Instagram
                               size={20}
                               className="text-zinc-400 group-hover:text-orange-500 transition-colors duration-300"
                             />
