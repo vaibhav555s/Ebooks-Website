@@ -34,7 +34,7 @@ import { booksData } from "../data/data";
 export default function StoryReader() {
   const { id } = useParams();
   const router = useNavigate();
-  const book = booksData.find((b) => b.id === id);
+  const book = booksData.find((b) => b.id === "1"); // For simplicity, always use the first book in the data
   const isDark = true; // Always use dark theme
 
   const [progress, setProgress] = useState(0);
@@ -87,6 +87,11 @@ export default function StoryReader() {
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
 
   // Handle scroll events
   useEffect(() => {
@@ -892,9 +897,10 @@ export default function StoryReader() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 style={{
+                  WebkitTextFillColor: "transparent",
                   textShadow: isDark
-                    ? "0 0 20px rgba(249, 115, 22, 0.3)"
-                    : "0 0 20px rgba(251, 191, 36, 0.3)",
+                    ? "0 0 0.5px rgba(249, 115, 22, 0.4), 0 0 6px rgba(249, 115, 22, 0.1)"
+                    : "0 0 0.5px rgba(251, 191, 36, 0.4), 0 0 6px rgba(251, 191, 36, 0.1)",
                 }}
               >
                 <div className="relative">
