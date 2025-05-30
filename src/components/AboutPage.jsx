@@ -7,7 +7,7 @@ import Navbar from "./Navbar3"
 import Footer from "./Footer"
 import SkillsGalaxy from "./skills-galaxy"
 import {Link} from "react-router-dom"
-
+import profilePic from "../assets/profile.jpeg"
 export default function AboutPage() {
   const containerRef = useRef(null)
   const [activeTab, setActiveTab] = useState("experience")
@@ -239,9 +239,9 @@ export default function AboutPage() {
                   {/* Image container */}
                   <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-zinc-800">
                     <img
-                      src="/placeholder.svg?height=256&width=256"
+                      src={profilePic}
                       alt="Vaibhav Sonawane"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover scale-150 mt-14"
                     />
                   </div>
 
