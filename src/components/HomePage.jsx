@@ -8,7 +8,8 @@ import Footer from "./Footer";
 import Navbar from "./Navbar3"; // or your preferred navbar
 import { ThemeProvider } from "./theme-provider"; // Ensure this exists
 import Hero2 from "./Hero2"; // Ensure this exists
-import BooksSection1 from "./BooksSection1";
+// import BooksSection1 from "./BooksSection1";
+import BooksSection2 from "./BooksSection2";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,9 +37,8 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
             >
               <Hero2 />
-              <BooksSection1 />
+              <BooksSection2 />
               <FeedbackCTA />
-              <FeedbackSection />
               <Footer />
             </motion.div>
           )}

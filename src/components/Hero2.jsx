@@ -146,7 +146,7 @@ export default function Hero() {
                 to="/"
                 onClick={(e) => {
                   e.preventDefault(); // stop actual route navigation
-                  const booksSection = document.getElementById("books");
+                  const booksSection = document.getElementById("books1");
                   if (booksSection) {
                     booksSection.scrollIntoView({ behavior: "smooth" });
                   }

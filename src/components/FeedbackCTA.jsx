@@ -86,14 +86,7 @@ export default function FeedbackCTA() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Link
-                to="/"
-                onClick={(e) => {
-                  e.preventDefault(); // stop actual route navigation
-                  const feedback = document.getElementById("feedback");
-                  if (feedback) {
-                    feedback.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
+                to="/feedback"
               >
               <motion.button
                 className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 text-white font-medium text-lg shadow-lg flex items-center gap-2 mx-auto"

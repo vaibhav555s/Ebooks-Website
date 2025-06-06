@@ -37,7 +37,8 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/about", label: "Contact Us" },
+    { href: "/trending", label: "Trending Stories" },
+    { href: "/feedback", label: "Feedback" },
   ];
 
   return (
