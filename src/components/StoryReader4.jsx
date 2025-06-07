@@ -1,13 +1,8 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useRef } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { useParams, useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
   Heart,
@@ -20,24 +15,24 @@ import {
   AlignLeft,
   AlignCenter,
   Clock,
-  Award,
   Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  Timer,
+  BookOpen,
+  Star,
 } from "lucide-react";
 import {Link} from "react-router-dom";
-// No need to import useTheme since we'll use a constant dark theme
-import { cn } from "../lib/utils";
-import { booksData } from "../data/data";
-
-// Sample book data
-
+import { cn } from "@/lib/utils"
+import { booksData } from "../data/data"
+import { useStoryPagination } from "./use-story-pagination"
 
 export default function StoryReader() {
   const { id } = useParams();
   const router = useNavigate();
-  const book = booksData.find((b) => b.id === "1"); // For simplicity, always use the first book in the data
+  const book = booksData.find((b) => b.id === id);
   const isDark = true; // Always use dark theme
 
-  const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
@@ -54,11 +49,28 @@ export default function StoryReader() {
   const [lineHeight, setLineHeight] = useState(1.8);
   const [showAchievement, setShowAchievement] = useState(false);
   const [achievementType, setAchievementType] = useState("");
+  const [userRating, setUserRating] = useState(0);
+  const [userFeedback, setUserFeedback] = useState("");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const contentRef = useRef(null);
   const scrollRef = useRef(null);
   const lastScrollY = useRef(0);
   const readingTimer = useRef(null);
+
+  // Use pagination hook
+  const {
+    currentPage,
+    totalPages,
+    progress,
+    currentPageContent,
+    isFirstPage,
+    isLastPage,
+    isAnimating,
+    nextPage,
+    previousPage,
+    goToPage,
+  } = useStoryPagination(book);
 
   // Particles for ambient effect
   const particles = Array.from({ length: 30 }).map((_, i) => ({
@@ -77,7 +89,6 @@ export default function StoryReader() {
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 0.8, 0.5]);
 
   // Simulate loading
   useEffect(() => {
@@ -88,47 +99,24 @@ export default function StoryReader() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
-
-  // Handle scroll events
+  // Handle scroll events for navbar auto-hide
   useEffect(() => {
     const handleScroll = () => {
-      if (contentRef.current) {
-        const scrollTop = window.scrollY;
-        const scrollHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const scrollProgress = (scrollTop / scrollHeight) * 100;
-        setProgress(scrollProgress);
+      const scrollTop = window.scrollY;
 
-        // Auto-hide navbar on scroll down, show on scroll up
-        if (scrollTop > lastScrollY.current + 20) {
-          setShowNavbar(false);
-          lastScrollY.current = scrollTop;
-        } else if (scrollTop < lastScrollY.current - 20) {
-          setShowNavbar(true);
-          lastScrollY.current = scrollTop;
-        }
-
-        // Show achievement at 50% progress
-        if (scrollProgress > 50 && scrollProgress < 52 && !showAchievement) {
-          setAchievementType("halfway");
-          setShowAchievement(true);
-          setTimeout(() => setShowAchievement(false), 3000);
-        }
-
-        // Show completion celebration at 95% progress
-        if (scrollProgress > 95 && !showCompletionCelebration) {
-          setShowCompletionCelebration(true);
-        }
+      // Auto-hide navbar on scroll down, show on scroll up
+      if (scrollTop > lastScrollY.current + 20) {
+        setShowNavbar(false);
+        lastScrollY.current = scrollTop;
+      } else if (scrollTop < lastScrollY.current - 20) {
+        setShowNavbar(true);
+        lastScrollY.current = scrollTop;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [showAchievement, showCompletionCelebration]);
+  }, []);
 
   // Reading time tracker
   useEffect(() => {
@@ -152,11 +140,22 @@ export default function StoryReader() {
     };
   }, [isLoading, readingTime, showAchievement]);
 
+  // Show completion celebration on last page
+  useEffect(() => {
+    if (
+      isLastPage &&
+      currentPage === totalPages &&
+      !showCompletionCelebration
+    ) {
+      setShowCompletionCelebration(true);
+    }
+  }, [isLastPage, currentPage, totalPages, showCompletionCelebration]);
+
   // Handle font size changes
   const changeFontSize = (delta) => {
     setFontSize((prevSize) => {
       const newSize = prevSize + delta;
-      return Math.min(Math.max(newSize, 14), 24); // Limit between 14px and 24px
+      return Math.min(Math.max(newSize, 14), 24);
     });
   };
 
@@ -164,7 +163,7 @@ export default function StoryReader() {
   const changeLineHeight = (delta) => {
     setLineHeight((prevHeight) => {
       const newHeight = Number.parseFloat((prevHeight + delta).toFixed(1));
-      return Math.min(Math.max(newHeight, 1.2), 2.4); // Limit between 1.2 and 2.4
+      return Math.min(Math.max(newHeight, 1.2), 2.4);
     });
   };
 
@@ -183,9 +182,30 @@ export default function StoryReader() {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        previousPage();
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        nextPage();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [nextPage, previousPage]);
+
+  // Auto-scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   if (!book)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 dark:bg-zinc-950">
+      <div className="min-h-screen flex items-center justify-center bg-zinc-950">
         <p className="text-center text-white">
           Story not found!{" "}
           <Link href="/library" className="text-orange-500 hover:underline">
@@ -198,10 +218,7 @@ export default function StoryReader() {
   return (
     <div
       ref={scrollRef}
-      className={cn(
-        "relative min-h-screen overflow-hidden transition-colors duration-700",
-        isDark ? "bg-zinc-950 text-zinc-100" : "bg-amber-50 text-zinc-800"
-      )}
+      className="relative min-h-screen overflow-hidden bg-zinc-950 text-zinc-100"
       style={{
         fontFamily:
           fontFamily === "serif"
@@ -214,24 +231,14 @@ export default function StoryReader() {
         className="fixed inset-0 z-[-2] overflow-hidden"
         style={{ y: backgroundY }}
       >
-        <div
-          className={cn(
-            "absolute inset-0 opacity-80",
-            isDark
-              ? "bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950"
-              : "bg-gradient-to-b from-amber-50 via-orange-50 to-amber-100"
-          )}
-        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950 opacity-80"></div>
 
         {/* Abstract shapes */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(5)].map((_, i) => (
             <motion.div
               key={`shape-${i}`}
-              className={cn(
-                "absolute rounded-full blur-3xl",
-                isDark ? "bg-orange-500/10" : "bg-amber-500/20"
-              )}
+              className="absolute rounded-full blur-3xl bg-orange-500/10"
               initial={{
                 x: `${Math.random() * 100}%`,
                 y: `${Math.random() * 100}%`,
@@ -294,29 +301,28 @@ export default function StoryReader() {
         ))}
       </motion.div>
 
+      {/* Progress Bar - Top of page */}
+      <motion.div
+        className="fixed top-0 left-0 h-1 z-50 bg-gradient-to-r from-orange-500 to-pink-500"
+        style={{ width: `${progress}%` }}
+        initial={{ width: "0%" }}
+        animate={{ width: `${progress}%` }}
+        transition={{ type: "spring", stiffness: 50 }}
+      />
+
       {/* Navbar - Auto-hides on scroll */}
       <AnimatePresence>
         {showNavbar && (
           <motion.div
-            className={cn(
-              "fixed top-0 left-0 right-0 z-50 px-4 py-4 flex justify-between items-center backdrop-blur-md border-b transition-all duration-300",
-              isDark
-                ? "bg-zinc-900/70 border-zinc-800/30"
-                : "bg-amber-50/70 border-amber-200/50"
-            )}
+            className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex justify-between items-center bg-zinc-900/70 backdrop-blur-md border-b border-zinc-800/30 transition-all duration-300"
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             exit={{ y: -100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            <Link to="/">
+            <Link href="/">
               <motion.button
-                className={cn(
-                  "p-3 rounded-full backdrop-blur-md shadow-lg border",
-                  isDark
-                    ? "bg-zinc-800/80 text-white hover:bg-zinc-700/80 border-zinc-700"
-                    : "bg-white/80 text-zinc-800 hover:bg-zinc-100/80 border-amber-200/50"
-                )}
+                className="p-3 rounded-full bg-zinc-800/80 text-white hover:bg-zinc-700/80 border border-zinc-700 backdrop-blur-md shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -324,21 +330,24 @@ export default function StoryReader() {
               </motion.button>
             </Link>
 
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="text-sm font-medium text-zinc-300">
+                Page {currentPage} of {totalPages}
+              </span>
+            </motion.div>
+
             <motion.button
               onClick={() => setShowSettings(!showSettings)}
-              className={cn(
-                "p-3 rounded-full backdrop-blur-md shadow-lg border",
-                isDark
-                  ? "bg-zinc-800/80 text-white hover:bg-zinc-700/80 border-zinc-700"
-                  : "bg-white/80 text-zinc-800 hover:bg-zinc-100/80 border-amber-200/50"
-              )}
+              className="p-3 rounded-full bg-zinc-800/80 text-white hover:bg-zinc-700/80 border border-zinc-700 backdrop-blur-md shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Settings
-                size={20}
-                className={isDark ? "text-orange-500" : "text-amber-500"}
-              />
+              <Settings size={20} className="text-orange-500" />
             </motion.button>
           </motion.div>
         )}
@@ -351,13 +360,9 @@ export default function StoryReader() {
           onClick={handleLike}
           className={cn(
             "w-14 h-14 rounded-full flex items-center justify-center shadow-lg relative",
-            isDark
-              ? hasLiked
-                ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                : "bg-zinc-800 border border-zinc-700 text-zinc-400"
-              : hasLiked
-              ? "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-              : "bg-white border border-amber-200 text-zinc-500"
+            hasLiked
+              ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+              : "bg-zinc-800 border border-zinc-700 text-zinc-400"
           )}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -366,12 +371,7 @@ export default function StoryReader() {
 
           {/* Like count */}
           <motion.div
-            className={cn(
-              "absolute -top-2 -right-2 min-w-6 h-6 rounded-full text-xs flex items-center justify-center px-1",
-              isDark
-                ? "bg-zinc-800 text-white border border-zinc-700"
-                : "bg-white text-zinc-800 border border-amber-200"
-            )}
+            className="absolute -top-2 -right-2 min-w-6 h-6 rounded-full text-xs flex items-center justify-center px-1 bg-zinc-800 text-white border border-zinc-700"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 500, damping: 15 }}
@@ -426,12 +426,7 @@ export default function StoryReader() {
 
         {/* Bookmark Button */}
         <motion.button
-          className={cn(
-            "w-12 h-12 rounded-full flex items-center justify-center shadow-lg",
-            isDark
-              ? "bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
-              : "bg-white border border-amber-200 text-zinc-500 hover:text-amber-500"
-          )}
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -440,12 +435,7 @@ export default function StoryReader() {
 
         {/* Comment Button */}
         <motion.button
-          className={cn(
-            "w-12 h-12 rounded-full flex items-center justify-center shadow-lg",
-            isDark
-              ? "bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
-              : "bg-white border border-amber-200 text-zinc-500 hover:text-amber-500"
-          )}
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -454,12 +444,7 @@ export default function StoryReader() {
 
         {/* Share Button */}
         <motion.button
-          className={cn(
-            "w-12 h-12 rounded-full flex items-center justify-center shadow-lg",
-            isDark
-              ? "bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
-              : "bg-white border border-amber-200 text-zinc-500 hover:text-amber-500"
-          )}
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-orange-500"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -469,84 +454,30 @@ export default function StoryReader() {
 
       {/* Reading Time Display */}
       <motion.div
-        className={cn(
-          "fixed top-20 left-6 z-40 px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5 shadow-lg",
-          isDark
-            ? "bg-zinc-800/80 text-zinc-300 border border-zinc-700"
-            : "bg-white/80 text-zinc-700 border border-amber-200"
-        )}
+        className="fixed top-20 left-6 z-40 px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5 shadow-lg bg-zinc-800/80 text-zinc-300 border border-zinc-700"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2 }}
       >
-        <Clock
-          size={14}
-          className={isDark ? "text-orange-500" : "text-amber-500"}
-        />
+        <Timer size={14} className="text-orange-500" />
         <span>{formatReadingTime(readingTime)}</span>
-      </motion.div>
-
-      {/* Scroll Progress Bar - Bottom position */}
-      <motion.div
-        className={cn(
-          "fixed bottom-0 left-0 h-1 z-50",
-          isDark
-            ? "bg-gradient-to-r from-orange-500 to-pink-500"
-            : "bg-gradient-to-r from-amber-400 to-orange-400"
-        )}
-        style={{ width: `${progress}%` }}
-        initial={{ width: "0%" }}
-        animate={{ width: `${progress}%` }}
-        transition={{ type: "spring", stiffness: 50 }}
-      />
-
-      {/* Fixed Progress Indicator */}
-      <motion.div
-        className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-zinc-800/90 border border-zinc-700 text-white shadow-lg flex items-center gap-2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <div className="h-1 w-16 rounded-full bg-zinc-700 overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-orange-500 to-pink-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <span className="text-sm font-medium">{Math.round(progress)}%</span>
       </motion.div>
 
       {/* Text Settings Panel */}
       <AnimatePresence>
         {showSettings && (
           <motion.div
-            className={cn(
-              "fixed bottom-6 left-6 z-40 p-4 rounded-xl shadow-lg w-72",
-              isDark
-                ? "bg-zinc-800/90 border border-zinc-700"
-                : "bg-white/90 border border-amber-200"
-            )}
+            className="fixed bottom-6 left-6 z-40 p-4 rounded-xl shadow-lg w-72 bg-zinc-800/90 border border-zinc-700"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             <div className="flex justify-between items-center mb-4">
-              <h3
-                className={cn(
-                  "font-medium",
-                  isDark ? "text-white" : "text-zinc-800"
-                )}
-              >
-                Reading Settings
-              </h3>
+              <h3 className="font-medium text-white">Reading Settings</h3>
               <button
                 onClick={() => setShowSettings(false)}
-                className={
-                  isDark
-                    ? "text-zinc-400 hover:text-zinc-200"
-                    : "text-zinc-500 hover:text-zinc-700"
-                }
+                className="text-zinc-400 hover:text-zinc-200"
               >
                 <X size={20} />
               </button>
@@ -555,38 +486,21 @@ export default function StoryReader() {
             <div className="space-y-5">
               {/* Font Size */}
               <div className="space-y-2">
-                <label
-                  className={cn(
-                    "text-sm font-medium flex items-center gap-2",
-                    isDark ? "text-zinc-300" : "text-zinc-700"
-                  )}
-                >
+                <label className="text-sm font-medium flex items-center gap-2 text-zinc-300">
                   <Type size={14} />
                   Font Size
                 </label>
                 <div className="flex items-center justify-between">
                   <button
                     onClick={() => changeFontSize(-1)}
-                    className={cn(
-                      "p-2 rounded-md",
-                      isDark
-                        ? "bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
-                        : "bg-amber-100 hover:bg-amber-200 text-zinc-700"
-                    )}
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
                   >
                     A-
                   </button>
-                  <span className={isDark ? "text-zinc-300" : "text-zinc-700"}>
-                    {fontSize}px
-                  </span>
+                  <span className="text-zinc-300">{fontSize}px</span>
                   <button
                     onClick={() => changeFontSize(1)}
-                    className={cn(
-                      "p-2 rounded-md",
-                      isDark
-                        ? "bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
-                        : "bg-amber-100 hover:bg-amber-200 text-zinc-700"
-                    )}
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
                   >
                     A+
                   </button>
@@ -595,38 +509,21 @@ export default function StoryReader() {
 
               {/* Line Height */}
               <div className="space-y-2">
-                <label
-                  className={cn(
-                    "text-sm font-medium flex items-center gap-2",
-                    isDark ? "text-zinc-300" : "text-zinc-700"
-                  )}
-                >
+                <label className="text-sm font-medium flex items-center gap-2 text-zinc-300">
                   <AlignLeft size={14} />
                   Line Spacing
                 </label>
                 <div className="flex items-center justify-between">
                   <button
                     onClick={() => changeLineHeight(-0.1)}
-                    className={cn(
-                      "p-2 rounded-md",
-                      isDark
-                        ? "bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
-                        : "bg-amber-100 hover:bg-amber-200 text-zinc-700"
-                    )}
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
                   >
                     -
                   </button>
-                  <span className={isDark ? "text-zinc-300" : "text-zinc-700"}>
-                    {lineHeight}x
-                  </span>
+                  <span className="text-zinc-300">{lineHeight}x</span>
                   <button
                     onClick={() => changeLineHeight(0.1)}
-                    className={cn(
-                      "p-2 rounded-md",
-                      isDark
-                        ? "bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
-                        : "bg-amber-100 hover:bg-amber-200 text-zinc-700"
-                    )}
+                    className="p-2 rounded-md bg-zinc-900 hover:bg-zinc-700 text-zinc-300"
                   >
                     +
                   </button>
@@ -635,12 +532,7 @@ export default function StoryReader() {
 
               {/* Font Family */}
               <div className="space-y-2">
-                <label
-                  className={cn(
-                    "text-sm font-medium",
-                    isDark ? "text-zinc-300" : "text-zinc-700"
-                  )}
-                >
+                <label className="text-sm font-medium text-zinc-300">
                   Font Family
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -649,12 +541,8 @@ export default function StoryReader() {
                     className={cn(
                       "p-2 rounded-md font-serif",
                       fontFamily === "serif"
-                        ? isDark
-                          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                          : "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-                        : isDark
-                        ? "bg-zinc-900 text-zinc-300"
-                        : "bg-amber-100 text-zinc-700"
+                        ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+                        : "bg-zinc-900 text-zinc-300"
                     )}
                   >
                     Serif
@@ -664,12 +552,8 @@ export default function StoryReader() {
                     className={cn(
                       "p-2 rounded-md font-sans",
                       fontFamily === "sans"
-                        ? isDark
-                          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                          : "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-                        : isDark
-                        ? "bg-zinc-900 text-zinc-300"
-                        : "bg-amber-100 text-zinc-700"
+                        ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+                        : "bg-zinc-900 text-zinc-300"
                     )}
                   >
                     Sans
@@ -679,12 +563,7 @@ export default function StoryReader() {
 
               {/* Text Alignment */}
               <div className="space-y-2">
-                <label
-                  className={cn(
-                    "text-sm font-medium",
-                    isDark ? "text-zinc-300" : "text-zinc-700"
-                  )}
-                >
+                <label className="text-sm font-medium text-zinc-300">
                   Text Alignment
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -693,12 +572,8 @@ export default function StoryReader() {
                     className={cn(
                       "p-2 rounded-md flex justify-center",
                       textAlign === "left"
-                        ? isDark
-                          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                          : "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-                        : isDark
-                        ? "bg-zinc-900 text-zinc-300"
-                        : "bg-amber-100 text-zinc-700"
+                        ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+                        : "bg-zinc-900 text-zinc-300"
                     )}
                   >
                     <AlignLeft size={16} />
@@ -708,12 +583,8 @@ export default function StoryReader() {
                     className={cn(
                       "p-2 rounded-md flex justify-center",
                       textAlign === "center"
-                        ? isDark
-                          ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                          : "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-                        : isDark
-                        ? "bg-zinc-900 text-zinc-300"
-                        : "bg-amber-100 text-zinc-700"
+                        ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
+                        : "bg-zinc-900 text-zinc-300"
                     )}
                   >
                     <AlignCenter size={16} />
@@ -729,51 +600,19 @@ export default function StoryReader() {
       <AnimatePresence>
         {showAchievement && (
           <motion.div
-            className={cn(
-              "fixed top-24 left-1/2 transform -translate-x-1/2 z-50 py-3 px-4 rounded-lg shadow-lg flex items-center gap-3",
-              isDark
-                ? "bg-zinc-800 border border-zinc-700"
-                : "bg-white border border-amber-200"
-            )}
+            className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 py-3 px-4 rounded-lg shadow-lg flex items-center gap-3 bg-zinc-800 border border-zinc-700"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <div
-              className={cn(
-                "w-10 h-10 rounded-full flex items-center justify-center",
-                isDark
-                  ? "bg-gradient-to-r from-orange-500 to-pink-500"
-                  : "bg-gradient-to-r from-amber-400 to-orange-400"
-              )}
-            >
-              {achievementType === "halfway" ? (
-                <Award size={20} className="text-white" />
-              ) : (
-                <Clock size={20} className="text-white" />
-              )}
+            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-r from-orange-500 to-pink-500">
+              <Clock size={20} className="text-white" />
             </div>
             <div>
-              <h4
-                className={cn(
-                  "font-bold text-sm",
-                  isDark ? "text-white" : "text-zinc-800"
-                )}
-              >
-                {achievementType === "halfway"
-                  ? "Halfway There!"
-                  : "Reading Streak!"}
-              </h4>
-              <p
-                className={cn(
-                  "text-xs",
-                  isDark ? "text-zinc-300" : "text-zinc-600"
-                )}
-              >
-                {achievementType === "halfway"
-                  ? "You're halfway through this story. Keep going!"
-                  : "You've been reading for 2 minutes straight. Great focus!"}
+              <h4 className="font-bold text-sm text-white">Reading Streak!</h4>
+              <p className="text-xs text-zinc-300">
+                You've been reading for 2 minutes straight. Great focus!
               </p>
             </div>
           </motion.div>
@@ -784,53 +623,24 @@ export default function StoryReader() {
       <AnimatePresence>
         {isLoading && (
           <motion.div
-            className={cn(
-              "fixed inset-0 z-50 flex items-center justify-center",
-              isDark ? "bg-zinc-950" : "bg-amber-50"
-            )}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
           >
             <motion.div className="flex flex-col items-center">
               <motion.div
-                className={cn(
-                  "w-16 h-16 mb-4",
-                  isDark ? "text-orange-500" : "text-amber-500"
-                )}
+                className="w-16 h-16 mb-4 text-orange-500"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="64"
-                  height="64"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                </svg>
+                <BookOpen size={64} />
               </motion.div>
 
-              <motion.div
-                className={cn(
-                  "h-1 w-48 rounded-full overflow-hidden",
-                  isDark ? "bg-zinc-800" : "bg-amber-200"
-                )}
-              >
+              <motion.div className="h-1 w-48 rounded-full overflow-hidden bg-zinc-800">
                 <motion.div
-                  className={cn(
-                    "h-full",
-                    isDark
-                      ? "bg-gradient-to-r from-orange-500 to-pink-500"
-                      : "bg-gradient-to-r from-amber-400 to-orange-400"
-                  )}
+                  className="h-full bg-gradient-to-r from-orange-500 to-pink-500"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -838,10 +648,7 @@ export default function StoryReader() {
               </motion.div>
 
               <motion.p
-                className={cn(
-                  "mt-4 text-sm",
-                  isDark ? "text-zinc-400" : "text-amber-700"
-                )}
+                className="mt-4 text-sm text-zinc-400"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -860,47 +667,25 @@ export default function StoryReader() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className={cn(
-            "relative max-w-3xl w-full p-8 md:p-10 rounded-3xl shadow-2xl",
-            isDark
-              ? "bg-zinc-900/40 text-zinc-100 border border-zinc-800/30"
-              : "bg-white/90 text-zinc-800 border border-amber-200/30"
-          )}
+          className="relative max-w-4xl w-full p-8 md:p-12 rounded-3xl shadow-2xl bg-zinc-900/40 text-zinc-100 border border-zinc-800/30"
           style={{
-            boxShadow: isDark
-              ? "0 10px 30px -5px rgba(0, 0, 0, 0.3)"
-              : "0 10px 30px -5px rgba(251, 191, 36, 0.2)",
+            boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.3)",
           }}
         >
-          {/* Paper texture overlay for light mode */}
-          {!isDark && (
-            <div
-              className="absolute inset-0 rounded-3xl opacity-5 pointer-events-none"
-              style={{
-                backgroundImage:
-                  "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmOWY5ZjkiPjwvcmVjdD4KPC9zdmc+')",
-              }}
-            />
-          )}
-
           {/* Typing Title Effect */}
           <AnimatePresence>
             {showTitle && (
               <motion.h1
-                className={cn(
-                  "text-3xl md:text-5xl font-bold mb-8 text-center tracking-wide",
-                  isDark
-                    ? "text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400"
-                    : "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500"
-                )}
+                className="text-4xl md:text-6xl font-bold mb-4 text-center tracking-wide"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 style={{
+                  background:
+                    "linear-gradient(135deg, #fb923c 0%, #ec4899 100%)",
+                  WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  textShadow: isDark
-                    ? "0 0 0.5px rgba(249, 115, 22, 0.4), 0 0 6px rgba(249, 115, 22, 0.1)"
-                    : "0 0 0.5px rgba(251, 191, 36, 0.4), 0 0 6px rgba(251, 191, 36, 0.1)",
+                  backgroundClip: "text",
                 }}
               >
                 <div className="relative">
@@ -922,12 +707,7 @@ export default function StoryReader() {
 
                   {/* Decorative underline */}
                   <motion.div
-                    className={cn(
-                      "absolute -bottom-4 left-1/2 transform -translate-x-1/2 h-0.5 w-24",
-                      isDark
-                        ? "bg-gradient-to-r from-orange-500/50 via-pink-500/50 to-orange-500/50"
-                        : "bg-gradient-to-r from-amber-400/50 via-orange-400/50 to-amber-400/50"
-                    )}
+                    className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 h-0.5 w-24 bg-gradient-to-r from-orange-500/50 via-pink-500/50 to-orange-500/50"
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: "40%", opacity: 1 }}
                     transition={{ delay: 1.5, duration: 0.5 }}
@@ -939,215 +719,311 @@ export default function StoryReader() {
 
           {/* Author and Reading Time */}
           <motion.div
-            className="flex justify-center items-center gap-4 mb-8"
+            className="flex justify-center items-center gap-4 mb-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6 }}
           >
-            <div
-              className={cn(
-                "px-3 py-1 rounded-full text-sm",
-                isDark
-                  ? "bg-zinc-800 text-zinc-300"
-                  : "bg-amber-100 text-amber-700"
-              )}
-            >
+            <div className="px-4 py-2 rounded-full text-sm bg-zinc-800 text-zinc-300">
               By {book.author}
             </div>
-            <div
-              className={cn(
-                "px-3 py-1 rounded-full text-sm flex items-center gap-1.5",
-                isDark
-                  ? "bg-zinc-800 text-zinc-300"
-                  : "bg-amber-100 text-amber-700"
-              )}
-            >
+            <div className="px-4 py-2 rounded-full text-sm flex items-center gap-1.5 bg-zinc-800 text-zinc-300">
               <Clock size={12} />
               <span>{book.readTime}</span>
             </div>
           </motion.div>
 
-          {/* Story Content */}
-          <motion.div
-            className={`space-y-8 leading-relaxed text-${textAlign}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 1 }}
-            style={{
-              fontSize: `${fontSize}px`,
-              lineHeight: lineHeight,
-            }}
-          >
-            {book.story.split("\n\n").map((paragraph, index) => (
-              <div key={index} className="relative">
-                {/* Chapter marker if it's the first paragraph */}
-                {index === 0 && (
-                  <div className="flex items-center mb-6">
-                    <div
-                      className={cn(
-                        "flex-grow h-px mr-3",
-                        isDark ? "bg-zinc-700" : "bg-amber-200"
-                      )}
-                    />
-                    <div
-                      className={cn(
-                        "flex items-center gap-2 text-sm",
-                        isDark ? "text-orange-500" : "text-amber-600"
-                      )}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                      </svg>
+          {/* Page Content with Animation */}
+          <div className="relative min-h-[400px] mb-12">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentPage}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30,
+                  duration: 0.3,
+                }}
+                className={`space-y-6 leading-relaxed text-${textAlign}`}
+                style={{
+                  fontSize: `${fontSize}px`,
+                  lineHeight: lineHeight,
+                }}
+              >
+                {/* Chapter marker for first page */}
+                {currentPage === 1 && (
+                  <div className="flex items-center mb-8">
+                    <div className="flex-grow h-px bg-zinc-700 mr-3" />
+                    <div className="flex items-center gap-2 text-sm text-orange-500">
+                      <BookOpen size={14} />
                       <span className="uppercase tracking-wider font-medium">
                         Chapter 1
                       </span>
                     </div>
-                    <div
-                      className={cn(
-                        "flex-grow h-px ml-3",
-                        isDark ? "bg-zinc-700" : "bg-amber-200"
-                      )}
-                    />
+                    <div className="flex-grow h-px bg-zinc-700 ml-3" />
                   </div>
                 )}
 
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 1.8 + index * 0.1,
-                    duration: 0.5,
-                  }}
-                  className={cn(
-                    "tracking-wide",
-                    isDark ? "text-zinc-200" : "text-zinc-800",
-                    index === 0
-                      ? "first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:leading-none first-paragraph"
-                      : ""
-                  )}
-                  style={{
-                    textShadow: isDark
-                      ? "0 0 1px rgba(255, 255, 255, 0.1)"
-                      : "0 0 1px rgba(0, 0, 0, 0.05)",
-                    letterSpacing: fontSize > 18 ? "0.01em" : "normal",
-                  }}
+                {/* Page Content */}
+                {currentPageContent.split("\n\n").map((paragraph, index) => (
+                  <motion.p
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: index * 0.1,
+                      duration: 0.5,
+                    }}
+                    className={cn(
+                      "tracking-wide text-zinc-200",
+                      currentPage === 1 && index === 0
+                        ? "first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:leading-none first-letter:text-orange-400"
+                        : ""
+                    )}
+                    style={{
+                      textShadow: "0 0 1px rgba(255, 255, 255, 0.1)",
+                      letterSpacing: fontSize > 18 ? "0.01em" : "normal",
+                    }}
+                  >
+                    {paragraph}
+                  </motion.p>
+                ))}
+
+                {/* "THE END" for last page */}
+                {isLastPage && (
+                  <motion.div
+                    className="text-center mt-12 pt-8 border-t border-zinc-700"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400 mb-4">
+                      THE END
+                    </h2>
+                    <div className="flex items-center justify-center gap-2 text-zinc-400">
+                      <Sparkles size={16} />
+                      <span>Thank you for reading</span>
+                      <Sparkles size={16} />
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Loading overlay during page transitions */}
+            <AnimatePresence>
+              {isAnimating && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center bg-zinc-900/50 backdrop-blur-sm rounded-xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1 }}
                 >
-                  {paragraph}
-                </motion.p>
+                  <motion.div
+                    className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: "linear",
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-                {/* Paragraph divider */}
-                {index < book.story.split("\n\n").length - 1 && (
-                  <div className="flex justify-center my-8">
-                    <div
-                      className={cn(
-                        "w-1.5 h-1.5 rounded-full mx-1",
-                        isDark ? "bg-zinc-700" : "bg-amber-200"
-                      )}
-                    />
-                    <div
-                      className={cn(
-                        "w-1.5 h-1.5 rounded-full mx-1",
-                        isDark ? "bg-zinc-700" : "bg-amber-200"
-                      )}
-                    />
-                    <div
-                      className={cn(
-                        "w-1.5 h-1.5 rounded-full mx-1",
-                        isDark ? "bg-zinc-700" : "bg-amber-200"
-                      )}
-                    />
-                  </div>
+          {/* Page Navigation */}
+          <div className="flex flex-col items-center gap-6">
+            {/* Page Dots Indicator */}
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <motion.button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={cn(
+                      "w-3 h-3 rounded-full transition-all duration-300",
+                      page === currentPage
+                        ? "bg-gradient-to-r from-orange-500 to-pink-500 scale-125"
+                        : "bg-zinc-700 hover:bg-zinc-600"
+                    )}
+                    whileHover={{ scale: page === currentPage ? 1.25 : 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  />
+                )
+              )}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center justify-between w-full max-w-md">
+              <motion.button
+                onClick={previousPage}
+                disabled={isFirstPage || isAnimating}
+                className={cn(
+                  "flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300",
+                  isFirstPage || isAnimating
+                    ? "bg-zinc-800 text-zinc-500 cursor-not-allowed"
+                    : "bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700"
                 )}
+                whileHover={!isFirstPage && !isAnimating ? { scale: 1.05 } : {}}
+                whileTap={!isFirstPage && !isAnimating ? { scale: 0.95 } : {}}
+              >
+                <ChevronLeft size={20} />
+                Previous
+              </motion.button>
+
+              <div className="text-center">
+                <div className="text-sm text-zinc-400">Page</div>
+                <div className="text-lg font-bold text-white">
+                  {currentPage} of {totalPages}
+                </div>
               </div>
-            ))}
-          </motion.div>
+
+              <motion.button
+                onClick={nextPage}
+                disabled={isLastPage || isAnimating}
+                className={cn(
+                  "flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300",
+                  isLastPage
+                    ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
+                    : isAnimating
+                    ? "bg-zinc-800 text-zinc-500 cursor-not-allowed"
+                    : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:opacity-90"
+                )}
+                whileHover={!isAnimating ? { scale: 1.05 } : {}}
+                whileTap={!isAnimating ? { scale: 0.95 } : {}}
+              >
+                {isLastPage ? "Finished" : "Next"}
+                {!isLastPage && <ChevronRight size={20} />}
+              </motion.button>
+            </div>
+          </div>
 
           {/* Story Complete Celebration */}
           <AnimatePresence>
-            {showCompletionCelebration && (
+            {showCompletionCelebration && isLastPage && (
               <motion.div
-                className={cn(
-                  "mt-16 p-6 rounded-xl border text-center",
-                  isDark
-                    ? "bg-zinc-800/50 border-zinc-700"
-                    : "bg-amber-50/50 border-amber-200"
-                )}
+                className="mt-12 p-8 rounded-xl border text-center bg-zinc-800/50 border-zinc-700"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
               >
                 <motion.div
-                  className="mb-4 mx-auto"
+                  className="mb-6 mx-auto"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{
                     type: "spring",
                     stiffness: 300,
                     damping: 15,
-                    delay: 0.2,
+                    delay: 0.7,
                   }}
                 >
-                  <Sparkles
-                    size={32}
-                    className={
-                      isDark
-                        ? "text-orange-500 mx-auto"
-                        : "text-amber-500 mx-auto"
-                    }
-                  />
+                  <Sparkles size={48} className="text-orange-500 mx-auto" />
                 </motion.div>
 
                 <motion.h3
-                  className={cn(
-                    "text-xl font-bold mb-2",
-                    isDark ? "text-white" : "text-zinc-800"
-                  )}
+                  className="text-2xl font-bold mb-3 text-white"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.9 }}
                 >
                   Story Complete!
                 </motion.h3>
 
                 <motion.p
-                  className={cn(
-                    "mb-6 text-sm",
-                    isDark ? "text-zinc-300" : "text-zinc-600"
-                  )}
+                  className="mb-8 text-zinc-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ delay: 1.1 }}
                 >
                   You've finished reading "{book.title}" by {book.author}.
                   Reading time: {formatReadingTime(readingTime)}
                 </motion.p>
 
+                {/* Rating System */}
+                <div className="mb-6">
+                  <h4 className="font-bold text-sm text-white mb-2">
+                    Rate this story:
+                  </h4>
+                  <div className="flex items-center justify-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <motion.button
+                        key={star}
+                        className="outline-none"
+                        onClick={() => setUserRating(star)}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Star
+                          size={32}
+                          className={cn(
+                            "cursor-pointer transition-colors duration-200",
+                            star <= userRating
+                              ? "text-orange-500"
+                              : "text-zinc-500"
+                          )}
+                        />
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Feedback Form */}
+                <div className="mb-6">
+                  <label
+                    htmlFor="feedback"
+                    className="block text-sm font-bold text-white mb-2"
+                  >
+                    Your Feedback:
+                  </label>
+                  <textarea
+                    id="feedback"
+                    className="w-full p-3 rounded-md bg-zinc-700 text-white border border-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
+                    placeholder="Share your thoughts about the story..."
+                    value={userFeedback}
+                    onChange={(e) => setUserFeedback(e.target.value)}
+                    maxLength={500}
+                    rows={4}
+                  />
+                  <p className="text-xs text-zinc-400 mt-1">
+                    {userFeedback.length}/{500} characters
+                  </p>
+                </div>
+
+                {/* Submit Button */}
+                <motion.button
+                  className="px-6 py-3 rounded-full text-sm font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={feedbackSubmitted}
+                  onClick={() => {
+                    // Simulate submission
+                    setFeedbackSubmitted(true);
+                    setTimeout(() => {
+                      setFeedbackSubmitted(false);
+                      alert("Feedback submitted successfully!");
+                    }, 2000);
+                  }}
+                >
+                  {feedbackSubmitted ? "Submitting..." : "Submit Feedback"}
+                </motion.button>
+
                 {/* Next Story Preview */}
                 {book.nextStory && (
                   <motion.div
-                    className={cn(
-                      "p-4 rounded-lg border flex gap-4 items-center text-left",
-                      isDark
-                        ? "bg-zinc-900 border-zinc-700"
-                        : "bg-white border-amber-200"
-                    )}
+                    className="p-6 rounded-lg border flex gap-4 items-center text-left bg-zinc-900 border-zinc-700 mt-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
+                    transition={{ delay: 1.3 }}
                     whileHover={{ y: -5 }}
                   >
-                    <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
+                    <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                       <img
                         src={book.nextStory.coverImage || "/placeholder.svg"}
                         alt={book.nextStory.title}
@@ -1155,35 +1031,23 @@ export default function StoryReader() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h4
-                        className={cn(
-                          "font-bold text-sm mb-1",
-                          isDark ? "text-white" : "text-zinc-800"
-                        )}
-                      >
+                      <h4 className="font-bold mb-1 text-white">
                         Up Next: {book.nextStory.title}
                       </h4>
-                      <p
-                        className={cn(
-                          "text-xs",
-                          isDark ? "text-zinc-400" : "text-zinc-500"
-                        )}
-                      >
+                      <p className="text-sm text-zinc-400 mb-2">
                         By {book.nextStory.author} • {book.nextStory.readTime}
                       </p>
+                      <span className="inline-block px-2 py-1 rounded-full text-xs bg-zinc-800 text-zinc-300">
+                        {book.nextStory.category}
+                      </span>
                     </div>
                     <Link href={`/reader/${book.nextStory.id}`}>
                       <motion.button
-                        className={cn(
-                          "px-3 py-1.5 rounded-full text-sm font-medium",
-                          isDark
-                            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white"
-                            : "bg-gradient-to-r from-amber-400 to-orange-400 text-white"
-                        )}
+                        className="px-6 py-3 rounded-full text-sm font-medium bg-gradient-to-r from-orange-500 to-pink-500 text-white"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        Read
+                        Start Reading
                       </motion.button>
                     </Link>
                   </motion.div>
