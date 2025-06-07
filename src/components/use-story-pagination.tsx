@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
-import type { Book } from "../data/data"
+import type { booksData } from "../data/data"
 
 export interface UseStoryPaginationReturn {
   currentPage: number
@@ -16,7 +16,7 @@ export interface UseStoryPaginationReturn {
   goToPage: (page: number) => void
 }
 
-export function useStoryPagination(book: Book | undefined): UseStoryPaginationReturn {
+export function useStoryPagination(book: booksData | undefined): UseStoryPaginationReturn {
   const [currentPage, setCurrentPage] = useState(1)
   const [isAnimating, setIsAnimating] = useState(false)
 

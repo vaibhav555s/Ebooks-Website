@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Clock, Star, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import {booksData} from '../data/data'; // Assuming you have a data file with book details
 
 interface Story {
   id: string;
@@ -32,83 +33,90 @@ const BooksSection2 = () => {
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
-      setStories([
-        {
-          id: '1',
-          title: 'The Digital Prophecy',
-          author: 'Alex Chen',
-          genre: 'sci-fi',
-          readTime: '15 min',
-          rating: 4.8,
-          likes: 1247,
-          cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=600&fit=crop',
-          excerpt: 'In a world where AI has evolved beyond human comprehension...',
-          isLiked: false
-        },
-        {
-          id: '2',
-          title: 'Echoes of Tomorrow',
-          author: 'Maya Rodriguez',
-          genre: 'fantasy',
-          readTime: '12 min',
-          rating: 4.6,
-          likes: 987,
-          cover: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=400&h=600&fit=crop',
-          excerpt: 'When ancient magic meets modern technology...',
-          isLiked: true
-        },
-        {
-          id: '3',
-          title: 'Neon Hearts',
-          author: 'Jordan Kim',
-          genre: 'romance',
-          readTime: '8 min',
-          rating: 4.9,
-          likes: 2156,
-          cover: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=600&fit=crop',
-          excerpt: 'Love finds a way in the neon-lit streets of Neo Tokyo...',
-          isLiked: false
-        },
-        {
-          id: '4',
-          title: 'The Memory Thief',
-          author: 'Sam Wilson',
-          genre: 'mystery',
-          readTime: '20 min',
-          rating: 4.7,
-          likes: 834,
-          cover: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=600&fit=crop',
-          excerpt: 'Detective Sarah Miles discovers a conspiracy that threatens...',
-          isLiked: false
-        },
-        {
-          id: '5',
-          title: 'Quantum Dreams',
-          author: 'Riley Zhang',
-          genre: 'adventure',
-          readTime: '18 min',
-          rating: 4.5,
-          likes: 1456,
-          cover: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=400&h=600&fit=crop',
-          excerpt: 'When dreams and reality collide in the quantum realm...',
-          isLiked: true
-        },
-        {
-          id: '6',
-          title: 'The Last Algorithm',
-          author: 'Casey Park',
-          genre: 'sci-fi',
-          readTime: '25 min',
-          rating: 4.8,
-          likes: 1789,
-          cover: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=600&fit=crop',
-          excerpt: 'In a post-digital world, one programmer holds the key...',
-          isLiked: false
-        }
-      ]);
+      setStories(booksData);
       setLoading(false);
     }, 1000);
   }, []);
+  // useEffect(() => {
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     setStories([
+  //       {
+  //         id: '1',
+  //         title: 'The Digital Prophecy',
+  //         author: 'Alex Chen',
+  //         genre: 'sci-fi',
+  //         readTime: '15 min',
+  //         rating: 4.8,
+  //         likes: 1247,
+  //         cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=600&fit=crop',
+  //         excerpt: 'In a world where AI has evolved beyond human comprehension...',
+  //         isLiked: false
+  //       },
+  //       {
+  //         id: '2',
+  //         title: 'Echoes of Tomorrow',
+  //         author: 'Maya Rodriguez',
+  //         genre: 'fantasy',
+  //         readTime: '12 min',
+  //         rating: 4.6,
+  //         likes: 987,
+  //         cover: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=400&h=600&fit=crop',
+  //         excerpt: 'When ancient magic meets modern technology...',
+  //         isLiked: true
+  //       },
+  //       {
+  //         id: '3',
+  //         title: 'Neon Hearts',
+  //         author: 'Jordan Kim',
+  //         genre: 'romance',
+  //         readTime: '8 min',
+  //         rating: 4.9,
+  //         likes: 2156,
+  //         cover: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=600&fit=crop',
+  //         excerpt: 'Love finds a way in the neon-lit streets of Neo Tokyo...',
+  //         isLiked: false
+  //       },
+  //       {
+  //         id: '4',
+  //         title: 'The Memory Thief',
+  //         author: 'Sam Wilson',
+  //         genre: 'mystery',
+  //         readTime: '20 min',
+  //         rating: 4.7,
+  //         likes: 834,
+  //         cover: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=600&fit=crop',
+  //         excerpt: 'Detective Sarah Miles discovers a conspiracy that threatens...',
+  //         isLiked: false
+  //       },
+  //       {
+  //         id: '5',
+  //         title: 'Quantum Dreams',
+  //         author: 'Riley Zhang',
+  //         genre: 'adventure',
+  //         readTime: '18 min',
+  //         rating: 4.5,
+  //         likes: 1456,
+  //         cover: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=400&h=600&fit=crop',
+  //         excerpt: 'When dreams and reality collide in the quantum realm...',
+  //         isLiked: true
+  //       },
+  //       {
+  //         id: '6',
+  //         title: 'The Last Algorithm',
+  //         author: 'Casey Park',
+  //         genre: 'sci-fi',
+  //         readTime: '25 min',
+  //         rating: 4.8,
+  //         likes: 1789,
+  //         cover: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=600&fit=crop',
+  //         excerpt: 'In a post-digital world, one programmer holds the key...',
+  //         isLiked: false
+  //       }
+  //     ]);
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
 
   const handleLike = (storyId: string) => {
     setStories(prev => prev.map(story => 
