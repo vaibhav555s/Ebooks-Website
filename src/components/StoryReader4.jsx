@@ -1033,7 +1033,7 @@ export default function StoryReader() {
                   disabled={feedbackSubmitted}
                   onClick={handleSubmitFeedback}
                 >
-                  {feedbackSubmitted ? "Submitting..." : "Submit Feedback"}
+                  {feedbackSubmitted ? "Submitted" : "Submit Feedback"}
                 </motion.button>
 
                 {/* Next Story Preview */}
