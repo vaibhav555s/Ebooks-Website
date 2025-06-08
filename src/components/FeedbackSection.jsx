@@ -31,9 +31,7 @@ export default function FeedbackSection() {
     overallRating: 5, // Default to middle value
     communityRatings: {
       creatorProfiles: 0,
-      socialComments: 0,
       readerRankings: 0,
-      liveStoryEvents: 0,
     },
     feedbackText: "",
   });
@@ -69,11 +67,24 @@ export default function FeedbackSection() {
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
+    if (!feedbackData.feedbackText.trim()) {
+      alert("Please enter some feedback before submitting.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Send feedbackData to Firestore
-      await addDoc(collection(db, "feedback"), feedbackData);
+      // Send feedbackData to Firestore with a timestamp
+      await addDoc(collection(db, "feedback"), {
+        ...feedbackData,
+        submittedAt: new Date(),
+        userAgent: navigator.userAgent,
+        screenSize: `${window.innerWidth}x${window.innerHeight}`,
+        language: navigator.language,
+        timezoneOffset: new Date().getTimezoneOffset(),
+      });
+      
 
       console.log("✅ Feedback submitted to Firebase:", feedbackData);
       setIsSubmitted(true);
