@@ -26,6 +26,8 @@ import {Link} from "react-router-dom";
 import { cn } from "@/lib/utils"
 import { booksData } from "../data/data"
 import { useStoryPagination } from "./use-story-pagination"
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebaseConfig"; // adjust path
 
 export default function StoryReader() {
   const { id } = useParams();
@@ -215,6 +217,33 @@ export default function StoryReader() {
       </div>
     );
 
+
+    const handleSubmitFeedback = async () => {
+      if (!userRating || !userFeedback.trim()) {
+        alert("Please provide both rating and feedback.");
+        return;
+      }
+
+      const feedbackEntry = {
+        storyId: book.id,
+        storyTitle: book.title,
+        userRating,
+        userFeedback: userFeedback.trim(),
+        submittedAt: new Date(),
+        screenSize: `${window.innerHeight}x${window.innerWidth}`,
+        userAgent: navigator.userAgent,
+        timezoneOffset: new Date().getTimezoneOffset(),
+      };
+
+      try {
+        await addDoc(collection(db, "storyFeedback"), feedbackEntry);
+        setFeedbackSubmitted(true);
+        alert("✅ Feedback submitted!");
+      } catch (error) {
+        console.error("Error submitting feedback:", error);
+        alert("❌ Something went wrong. Please try again later.");
+      }
+    };  
   return (
     <div
       ref={scrollRef}
@@ -1002,14 +1031,7 @@ export default function StoryReader() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   disabled={feedbackSubmitted}
-                  onClick={() => {
-                    // Simulate submission
-                    setFeedbackSubmitted(true);
-                    setTimeout(() => {
-                      setFeedbackSubmitted(false);
-                      alert("Feedback submitted successfully!");
-                    }, 2000);
-                  }}
+                  onClick={handleSubmitFeedback}
                 >
                   {feedbackSubmitted ? "Submitting..." : "Submit Feedback"}
                 </motion.button>
