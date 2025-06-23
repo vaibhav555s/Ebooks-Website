@@ -238,11 +238,11 @@ export default function AboutPage() {
 
                   {/* Image container */}
                   <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-zinc-800">
-                    <img
+                    {/* <img
                       src={profilePic}
                       alt="Vaibhav Sonawane"
                       className="w-full h-full object-cover scale-150 mt-14"
-                    />
+                    /> */}
                   </div>
 
                   {/* Decorative elements */}
