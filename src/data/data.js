@@ -2,7 +2,7 @@ export const booksData = [
   {
     id: "1",
     title: "The Midnight Library",
-    cover: "/src/assets/hero1.jpg",
+    cover: "/assets/hero1.jpg",
     genre: "Fiction",
     author: "Matt Haig",
     rating: 4.5,
@@ -28,7 +28,7 @@ In her final moments in the library, Nora realizes that every life has its strug
   {
     id: "2", 
     title: "The Silent Patient",
-    cover: "/src/assets/hero2.jpg",
+    cover: "/assets/hero2.jpg",
     genre: "Thriller",
     author: "Alex Michaelides",
     rating: 4.3,
@@ -54,7 +54,7 @@ In the end, Alicia's silence spoke louder than any words ever could. Her final p
   {
     id: "3",
     title: "Where the Crawdads Sing", 
-    cover: "/src/assets/hero3.jpg",
+    cover: "/assets/hero3.jpg",
     genre: "Fiction",
     author: "Delia Owens",
     rating: 4.7,
@@ -80,7 +80,7 @@ But the marsh had taught Kya its greatest lesson: how to survive. And in the end
   {
     id: "4",
     title: "The Seven Husbands of Evelyn Hugo",
-    cover: "/src/assets/hero1.jpg", 
+    cover: "/assets/hero1.jpg", 
     genre: "Fiction",
     author: "Taylor Jenkins Reid",
     rating: 4.6,
@@ -106,7 +106,7 @@ In the end, Evelyn's greatest role wasn't on screen - it was the decades-long pe
   {
     id: "5",
     title: "The Alchemist",
-    cover: "/src/assets/hero2.jpg",
+    cover: "/assets/hero2.jpg",
     genre: "Fiction", 
     author: "Paulo Coelho",
     rating: 4.4,
@@ -132,7 +132,7 @@ Santiago finally found the alchemist, who taught him the most important lesson o
   {
     id: "6",
     title: "Digital Dopamine: How to Break Free from Tech Addiction",
-    cover: "/src/assets/hero3.jpg",
+    cover: "/assets/hero3.jpg",
     genre: "Self-Help",
     author: "Maya Chen",
     rating: 4.8,
@@ -162,7 +162,7 @@ Your attention is your most valuable asset. Don't let anyone steal it from you.`
   {
     id: "7",
     title: "Side Hustle to Six Figures: The Gen Z Money Blueprint",
-    cover: "/src/assets/hero1.jpg",
+    cover: "/assets/hero1.jpg",
     genre: "Business",
     author: "Jordan Rivera",
     rating: 4.7,
@@ -200,7 +200,7 @@ The opportunity is there. The tools are free or cheap. The only question is: wil
   {
     id: "8",
     title: "The Last Notification: A Digital Love Story",
-    cover: "/src/assets/hero2.jpg",
+    cover: "/assets/hero2.jpg",
     genre: "Romance",
     author: "Alex Park",
     rating: 4.9,

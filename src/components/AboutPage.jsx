@@ -7,7 +7,7 @@ import Navbar from "./Navbar3"
 import Footer from "./Footer"
 import SkillsGalaxy from "./skills-galaxy"
 import {Link} from "react-router-dom"
-import profilePic from "../assets/profile.jpeg"
+// import profilePic from "../assets/profile.jpeg"
 export default function AboutPage() {
   const containerRef = useRef(null)
   const [activeTab, setActiveTab] = useState("experience")
