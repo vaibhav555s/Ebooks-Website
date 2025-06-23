@@ -15,7 +15,6 @@
     "canvas-confetti": "^1.9.3",
     "firebase": "^11.6.0",
     "framer-motion": "^12.6.3",
-    "lovable-tagger": "^1.1.8",
     "lucide-react": "^0.485.0",
     "path": "^0.12.7",
     "react": "^19.0.0",
