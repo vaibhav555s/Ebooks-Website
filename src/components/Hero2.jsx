@@ -25,6 +25,13 @@ export default function Hero() {
     delay: Math.random() * 5,
   }));
 
+  const scrollToTrendingStories = () => {
+    const booksSection = document.getElementById("books1");
+    if (booksSection) {
+      booksSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       ref={containerRef}
@@ -103,17 +110,6 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
             style={{ opacity }}
           >
-            {/* <motion.div
-              className="inline-block mb-4 p-2 rounded-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-700"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <span className="px-4 py-1 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-medium">
-                Immersive Reading Experience
-              </span>
-            </motion.div> */}
-
             <motion.h1
               className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
@@ -142,39 +138,20 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <Link
-                to="/"
-                onClick={(e) => {
-                  e.preventDefault(); // stop actual route navigation
-                  const booksSection = document.getElementById("books1");
-                  if (booksSection) {
-                    booksSection.scrollIntoView({ behavior: "smooth" });
-                  }
+              <motion.button
+                onClick={scrollToTrendingStories}
+                className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-lg shadow-lg flex items-center gap-2 glow-border-orange"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 15px rgba(249, 115, 22, 0.5)",
                 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <motion.button
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-lg shadow-lg flex items-center gap-2 glow-border-orange"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 15px rgba(249, 115, 22, 0.5)",
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <BookOpen className="w-5 h-5" />
-                  <span>Start Reading</span>
-                </motion.button>
-              </Link>
+                <BookOpen className="w-5 h-5" />
+                <span>Start Reading</span>
+              </motion.button>
 
-              <Link
-                to="/"
-                onClick={(e) => {
-                  e.preventDefault(); // stop actual route navigation
-                  const booksSection = document.getElementById("books");
-                  if (booksSection) {
-                    booksSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-              >
+              <Link to="/trending">
                 <motion.button
                   className="px-8 py-4 rounded-full bg-zinc-800 text-white font-medium text-lg shadow-md border border-zinc-700 flex items-center gap-2 hover:bg-zinc-700 transition-colors duration-300"
                   whileHover={{ scale: 1.05 }}

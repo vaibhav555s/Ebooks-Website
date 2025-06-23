@@ -1,7 +1,8 @@
+
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Github, Instagram, Linkedin, Mail, Twitter } from "lucide-react";
+import { BookOpen, Github, Instagram, Linkedin, Mail, Twitter, Send, Code } from "lucide-react";
 // import { useTheme } from "next-themes";
 
 export default function Footer() {
@@ -17,7 +18,7 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand Column */}
           <div className="space-y-4">
             <motion.div
@@ -52,14 +53,6 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex gap-4"
             >
-              {/* <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
-              >
-                <Twitter size={18} />
-              </a> */}
               <a
                 href="https://github.com"
                 target="_blank"
@@ -83,7 +76,7 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* Meet the Developer */}
+          {/* Share Your Story */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,25 +84,28 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-4"
           >
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
-              Meet the Developer
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+              <Send size={18} className="text-orange-500" />
+              Share Your Story
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              StoryWave is crafted with passion by developers who love
-              storytelling and technology.
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+              Have an amazing story idea? We'd love to feature it on StoryWave!
             </p>
-            <a
-              href="https://linkedin.com/in/vaibhavsonawane1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300"
-            >
-              <Linkedin size={16} />
-              <span>Connect on LinkedIn</span>
-            </a>
+            <div className="space-y-2">
+              <a
+                href="mailto:vaibhavsonawane2345@gmail.com?subject=Story Submission - StoryWave"
+                className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-300 text-sm"
+              >
+                <Mail size={14} />
+                Submit via Email
+              </a>
+              <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+                ⚡ 24-hour response guarantee
+              </p>
+            </div>
           </motion.div>
 
-          {/* Contribute */}
+          {/* Developer Contribution */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -117,55 +113,56 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-4"
           >
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
-              Your Contributions Welcome
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+              <Code size={18} className="text-purple-500" />
+              For Developers
             </h3>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Have ideas to make StoryWave better? We'd love to hear from you
-              and collaborate.
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+              Help us build the future of digital storytelling. All skill levels welcome!
             </p>
-            <div className="flex flex-col gap-2">
+            <div className="space-y-2">
               <a
-                href="/"
-                className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-300"
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-300 text-sm"
               >
-                <span>Share Feedback</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
+                <Github size={14} />
+                View Repository
               </a>
               <a
-                href="mailto:vaibhavsonawane2345@gmail.com"
-                className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-300"
+                href="mailto:vaibhavsonawane2345@gmail.com?subject=Developer Contribution - StoryWave"
+                className="block text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-300 text-sm"
               >
-                <span>Submit Story Ideas</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
+                Discuss Contributions
               </a>
             </div>
+          </motion.div>
+
+          {/* Meet the Developer */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="space-y-4"
+          >
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+              Meet the Developer
+            </h3>
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm">
+              StoryWave is crafted with passion by developers who love
+              storytelling and technology.
+            </p>
+            <a
+              href="https://linkedin.com/in/vaibhavsonawane1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800/50 transition-colors duration-300 text-sm"
+            >
+              <Linkedin size={14} />
+              <span>Connect on LinkedIn</span>
+            </a>
           </motion.div>
         </div>
 

@@ -2,17 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import FeedbackSection from "./FeedbackSection";
 import FeedbackCTA from "./FeedbackCTA";
 import Footer from "./Footer";
-import Navbar from "./Navbar3"; // or your preferred navbar
-import { ThemeProvider } from "./theme-provider"; // Ensure this exists
-import Hero2 from "./Hero2"; // Ensure this exists
-// import BooksSection1 from "./BooksSection1";
+import Navbar from "./Navbar3";
+import { ThemeProvider } from "./theme-provider";
+import Hero2 from "./Hero2";
 import BooksSection2 from "./BooksSection2";
+import BookmarksSection from "./BookmarksSection";
+import ReadingHistory from "./ReadingHistory";
+import CommunityEngagement from "./CommunityEngagement";
+import FloatingCTA from "./FloatingCTA";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState('trending');
+  const [selectedGenre, setSelectedGenre] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -21,10 +28,31 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'bookmarks':
+        return <BookmarksSection />;
+      case 'history':
+        return <ReadingHistory />;
+      default:
+        return (
+          <BooksSection2 
+            showLimited={true} 
+            onViewAll={() => navigate('/trending')}
+            selectedGenre={selectedGenre}
+            showGenreFilter={true}
+            onGenreChange={setSelectedGenre}
+          />
+        );
+    }
+  };
+
   return (
     <ThemeProvider defaultTheme="light" storageKey="storywave-theme">
       <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
         <Navbar />
+        <FloatingCTA />
+        
         <AnimatePresence>
           {isLoading ? (
             <LoadingScreen key="loading" />
@@ -37,7 +65,60 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
             >
               <Hero2 />
-              <BooksSection2 />
+              
+              {/* Section Navigation */}
+              <div className="container mx-auto px-4 py-8">
+                <div className="flex justify-center mb-8">
+                  <div className="flex items-center bg-white dark:bg-zinc-800 rounded-full p-1 shadow-sm border border-zinc-200 dark:border-zinc-700">
+                    <button
+                      onClick={() => setActiveSection('trending')}
+                      className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                        activeSection === 'trending'
+                          ? 'bg-orange-500 text-white shadow-sm'
+                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                      }`}
+                    >
+                      Trending Stories
+                    </button>
+                    <button
+                      onClick={() => setActiveSection('bookmarks')}
+                      className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                        activeSection === 'bookmarks'
+                          ? 'bg-orange-500 text-white shadow-sm'
+                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                      }`}
+                    >
+                      Bookmarks
+                    </button>
+                    <button
+                      onClick={() => setActiveSection('history')}
+                      className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                        activeSection === 'history'
+                          ? 'bg-orange-500 text-white shadow-sm'
+                          : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                      }`}
+                    >
+                      Reading History
+                    </button>
+                  </div>
+                </div>
+
+                {/* Active Section Content */}
+                <motion.div
+                  key={activeSection}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {renderActiveSection()}
+                </motion.div>
+              </div>
+
+              {/* Community Engagement Section */}
+              <div data-section="community">
+                <CommunityEngagement />
+              </div>
+
               <FeedbackCTA />
               <Footer />
             </motion.div>
@@ -73,9 +154,6 @@ function LoadingScreen() {
           animate={{ scale: [0.8, 1.2, 1], opacity: [0, 1, 1] }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          {/* <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400">
-            SW
-          </span> */}
         </motion.div>
         <motion.p
           className="mt-4 text-zinc-600 dark:text-zinc-300 text-sm"

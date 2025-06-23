@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
@@ -20,11 +21,42 @@ export function useStoryPagination(book: booksData | undefined): UseStoryPaginat
   const [currentPage, setCurrentPage] = useState(1)
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const totalPages = book?.totalPages || 0
+  // Convert story string into properly sized pages
+  const pages = book?.story ? createStoryPages(book.story) : []
+  const totalPages = pages.length || 0
   const progress = totalPages > 0 ? (currentPage / totalPages) * 100 : 0
-  const currentPageContent = book?.pages.find((p) => p.pageNumber === currentPage)?.content || ""
+  const currentPageContent = pages[currentPage - 1] || ""
   const isFirstPage = currentPage === 1
   const isLastPage = currentPage === totalPages
+
+  // Function to create pages with appropriate length
+  function createStoryPages(story: string): string[] {
+    const paragraphs = story.split('\n\n').filter(p => p.trim().length > 0)
+    const pages: string[] = []
+    let currentPage = ""
+    const maxWordsPerPage = 200 // Adjust this value to control page length
+    
+    for (const paragraph of paragraphs) {
+      const words = paragraph.split(' ')
+      const currentWords = currentPage.split(' ').length
+      
+      // If adding this paragraph would exceed the word limit, start a new page
+      if (currentWords + words.length > maxWordsPerPage && currentPage.length > 0) {
+        pages.push(currentPage.trim())
+        currentPage = paragraph
+      } else {
+        // Add paragraph to current page
+        currentPage = currentPage ? currentPage + '\n\n' + paragraph : paragraph
+      }
+    }
+    
+    // Add the last page if it has content
+    if (currentPage.trim()) {
+      pages.push(currentPage.trim())
+    }
+    
+    return pages.length > 0 ? pages : [story] // Fallback to original story if splitting fails
+  }
 
   const animatePageChange = useCallback(
     (newPage: number) => {
