@@ -63,7 +63,6 @@ export default function FeedbackSection() {
     }));
   };
 
-
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
@@ -84,7 +83,6 @@ export default function FeedbackSection() {
         language: navigator.language,
         timezoneOffset: new Date().getTimezoneOffset(),
       });
-      
 
       console.log("✅ Feedback submitted to Firebase:", feedbackData);
       setIsSubmitted(true);
@@ -116,33 +114,16 @@ export default function FeedbackSection() {
       }, 3000);
     } catch (error) {
       console.error("🚨 Error submitting feedback:", error.message, error.code);
-
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const testData = {
-  message: "Test feedback",
-  timestamp: new Date(),
-};
-
-try {
-  const docRef = addDoc(collection(db, "feedbacks"), testData);
-  console.log("Test document written with ID:", docRef.id);
-} catch (error) {
-  console.error("Error writing document:", error);
-}
-
-
-
 
   return (
     <div
       ref={containerRef}
       className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 py-16 overflow-hidden space-y-20"
       id="feedback"
-      
     >
       {/* Background Elements with Parallax */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -218,13 +199,11 @@ try {
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />
-
         </div>
       )}
 
-      <div> 
-
-          <RoadmapTimeline />
+      <div>
+        <RoadmapTimeline />
       </div>
     </div>
   );
