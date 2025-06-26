@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Star, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, addDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { trackUserInteraction, trackError } from "../../utils/analytics";
 
@@ -43,8 +43,14 @@ export default function StoryCompletionCelebration({
     };
 
     try {
-      await addDoc(collection(db, "storyFeedback"), feedbackEntry);
+      const feedbackCollection = collection(db, "storyFeedback");
+      const snapshot = await getDocs(feedbackCollection);
+      const newId = (snapshot.size + 1).toString();
+
+      await setDoc(doc(db, "storyFeedback", newId), feedbackEntry);
       setFeedbackSubmitted(true);
+      setUserFeedback("");
+      setUserRating(0);
       
       trackUserInteraction('feedback_submitted', book, { 
         rating: userRating, 

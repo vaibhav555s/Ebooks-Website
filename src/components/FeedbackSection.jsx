@@ -14,7 +14,7 @@ import RoadmapTimeline from "./roadmap-timeline";
 // import { useToast } from "@/components/ui/use-toast";
 // import { useTheme } from "next-themes";
 import { db } from "../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 
 export default function FeedbackSection() {
   const theme = "dark";
@@ -74,8 +74,13 @@ export default function FeedbackSection() {
     setIsSubmitting(true);
 
     try {
-      // Send feedbackData to Firestore with a timestamp
-      await addDoc(collection(db, "feedback"), {
+      // Getting existing feedbacks to count
+      const feedbackCollection = collection(db, "feedback");
+      const snapshot = await getDocs(feedbackCollection);
+      const newId = (snapshot.size + 1).toString();
+
+      // Sending feedbackData to Firestore with a timestamp
+      await setDoc(doc(db, "feedback", newId), {
         ...feedbackData,
         submittedAt: new Date(),
         userAgent: navigator.userAgent,
