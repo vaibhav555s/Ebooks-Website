@@ -9,6 +9,7 @@ import StoryOfTheDay from './StoryOfTheDay';
 import SocialShare from './SocialShare';
 import TrendingStats from './TrendingStats';
 import './Phase1.css';
+import { getAllBookLikes } from "../lib/firebaseFunctions";
 
 interface Story {
   id: string;
@@ -71,15 +72,21 @@ const BooksSection2: React.FC<BooksSection2Props> = ({
       setReadStories(JSON.parse(savedReadStories));
     }
 
-    setTimeout(() => {
-      const storiesWithViews = booksData.map(story => ({
+    const fetchBooksWithLikes = async () => {
+      const likesFromFirebase = await getAllBookLikes();
+
+      const storiesWithLikes = booksData.map((story) => ({
         ...story,
         views: story.views || Math.floor(Math.random() * 5000) + 1000,
-        isLiked: false
+        likes: likesFromFirebase[story.id] || 0, // 🔥 Override local likes with Firebase
+        isLiked: false,
       }));
-      setStories(storiesWithViews);
+
+      setStories(storiesWithLikes);
       setLoading(false);
-    }, 1000);
+    };
+
+    fetchBooksWithLikes();
   }, []);
 
   const handleGenreChange = (genre: string) => {

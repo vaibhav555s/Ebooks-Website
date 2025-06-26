@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase seeder (dev-only script)
+seedBooksToFirebase.js
+

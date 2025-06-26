@@ -6,7 +6,7 @@ export const booksData = [
     genre: "Fiction",
     author: "Matt Haig",
     rating: 4.5,
-    likes: 1250,
+    likes: 125,
     readTime: "8 min read",
     excerpt: "Between life and death lies the Midnight Library...",
     story: `Nora Seed finds herself in a magical library between life and death. Each book represents a different life she could have lived, each choice a different path.
@@ -23,10 +23,10 @@ The librarian, Mrs. Elm, explains that the library exists in the space between h
 
 As Nora explores more lives, she begins to understand that happiness isn't about living the perfect life, but about accepting the life you have and finding meaning within it. The library begins to fade as she makes her choice.
 
-In her final moments in the library, Nora realizes that every life has its struggles and joys. The question isn't which life is perfect, but which life is truly hers. She closes the last book and steps back into her own story, ready to write new chapters.`
+In her final moments in the library, Nora realizes that every life has its struggles and joys. The question isn't which life is perfect, but which life is truly hers. She closes the last book and steps back into her own story, ready to write new chapters.`,
   },
   {
-    id: "2", 
+    id: "2",
     title: "The Silent Patient",
     cover: "/assets/hero2.jpg",
     genre: "Thriller",
@@ -34,7 +34,8 @@ In her final moments in the library, Nora realizes that every life has its strug
     rating: 4.3,
     likes: 980,
     readTime: "7 min read",
-    excerpt: "A woman refuses to speak after allegedly murdering her husband...",
+    excerpt:
+      "A woman refuses to speak after allegedly murdering her husband...",
     story: `Alicia Berenson lived a seemingly perfect life. A successful painter married to a fashion photographer, she had everything she could want. Until the day she shot her husband five times in the face and then never spoke again.
 
 The media called it the crime of the century. Alicia's refusal to speak made her a mystery that captivated the nation. She was sent to a psychiatric facility, where she remained silent, painting disturbing self-portraits.
@@ -49,11 +50,11 @@ As Theo delved deeper into Alicia's world, he began to uncover secrets that chal
 
 The revelation, when it came, would shatter everything Theo believed about justice, truth, and the human capacity for both love and destruction. Sometimes the most dangerous person is the one you trust the most.
 
-In the end, Alicia's silence spoke louder than any words ever could. Her final painting revealed the truth that had been hidden in plain sight all along, a truth that would change everything.`
+In the end, Alicia's silence spoke louder than any words ever could. Her final painting revealed the truth that had been hidden in plain sight all along, a truth that would change everything.`,
   },
   {
     id: "3",
-    title: "Where the Crawdads Sing", 
+    title: "Where the Crawdads Sing",
     cover: "/assets/hero3.jpg",
     genre: "Fiction",
     author: "Delia Owens",
@@ -75,18 +76,19 @@ Chase's attention was different from Tate's gentle friendship. He was possessive
 
 When Chase was found dead at the bottom of a fire tower, all eyes turned to the Marsh Girl. The trial that followed would force Kya to leave her sanctuary and face the judgment of the very people who had abandoned her.
 
-But the marsh had taught Kya its greatest lesson: how to survive. And in the end, nature would have the final word in a story that spanned decades of love, loss, and the indomitable human spirit.`
+But the marsh had taught Kya its greatest lesson: how to survive. And in the end, nature would have the final word in a story that spanned decades of love, loss, and the indomitable human spirit.`,
   },
   {
     id: "4",
     title: "The Seven Husbands of Evelyn Hugo",
-    cover: "/assets/hero1.jpg", 
+    cover: "/assets/hero1.jpg",
     genre: "Fiction",
     author: "Taylor Jenkins Reid",
     rating: 4.6,
     likes: 1320,
     readTime: "10 min read",
-    excerpt: "A reclusive Hollywood icon tells her life story to an unknown journalist...",
+    excerpt:
+      "A reclusive Hollywood icon tells her life story to an unknown journalist...",
     story: `Evelyn Hugo was a legend. The kind of Hollywood icon who defined glamour and mystery for decades. At seventy-nine, she finally decided to tell her story, but only to one person: Monique Grant, a young journalist who had no idea why she was chosen.
 
 Evelyn's story began in the 1950s when she was still Evelyn Herrera, a poor girl from Hell's Kitchen with dreams bigger than her circumstances. She clawed her way to Hollywood, determined to become a star no matter the cost.
@@ -101,18 +103,19 @@ Through affairs, scandals, and Hollywood's golden age, Evelyn built an empire wh
 
 As Evelyn tells her story to Monique, the reason for choosing her becomes clear. Some secrets are too heavy to carry alone, and some stories can only be told when there's nothing left to lose.
 
-In the end, Evelyn's greatest role wasn't on screen - it was the decades-long performance of being someone she wasn't. But truth, like love, has a way of demanding to be seen.`
+In the end, Evelyn's greatest role wasn't on screen - it was the decades-long performance of being someone she wasn't. But truth, like love, has a way of demanding to be seen.`,
   },
   {
     id: "5",
     title: "The Alchemist",
     cover: "/assets/hero2.jpg",
-    genre: "Fiction", 
+    genre: "Fiction",
     author: "Paulo Coelho",
     rating: 4.4,
     likes: 2100,
     readTime: "6 min read",
-    excerpt: "A young shepherd's journey to find treasure leads him to discover himself...",
+    excerpt:
+      "A young shepherd's journey to find treasure leads him to discover himself...",
     story: `Santiago was a shepherd boy who loved to travel. He had been roaming the fields of Andalusia for two years, and he knew every sheep in his flock. But recently, he had been having the same dream over and over again.
 
 In his dream, a child appeared and told him to seek treasure at the pyramids of Egypt. The dream was so vivid that Santiago couldn't ignore it. He decided to consult a gypsy woman who lived in the nearby town.
@@ -127,7 +130,7 @@ He joined a caravan crossing the desert, where he met an Englishman searching fo
 
 In the oasis of Al-Fayoum, Santiago met Fatima, a desert woman who captured his heart. She encouraged him to continue his quest, saying that love never keeps a person from pursuing their Personal Legend. If it does, it's not true love.
 
-Santiago finally found the alchemist, who taught him the most important lesson of all: that the treasure he sought was not gold or jewels, but the journey itself and the wisdom he gained along the way.`
+Santiago finally found the alchemist, who taught him the most important lesson of all: that the treasure he sought was not gold or jewels, but the journey itself and the wisdom he gained along the way.`,
   },
   {
     id: "6",
@@ -138,7 +141,8 @@ Santiago finally found the alchemist, who taught him the most important lesson o
     rating: 4.8,
     likes: 2500,
     readTime: "12 min read",
-    excerpt: "A Gen Z guide to reclaiming your mind from endless scrolling and notifications...",
+    excerpt:
+      "A Gen Z guide to reclaiming your mind from endless scrolling and notifications...",
     story: `You wake up and immediately reach for your phone. The blue light hits your eyes before you've even fully opened them. Sound familiar? You're not alone. The average Gen Z spends over 9 hours a day on screens, and most of us feel trapped in a cycle we can't break.
 
 This isn't about becoming a digital hermit or throwing your phone in a drawer. This is about understanding what's happening in your brain when you scroll, and taking back control.
@@ -157,7 +161,7 @@ The goal isn't to eliminate technology - it's to use it intentionally. When you 
 
 Remember, every time you choose to put down your phone and engage with the real world, you're literally rewiring your brain. You're building new neural pathways that prioritize presence over digital stimulation.
 
-Your attention is your most valuable asset. Don't let anyone steal it from you.`
+Your attention is your most valuable asset. Don't let anyone steal it from you.`,
   },
   {
     id: "7",
@@ -168,7 +172,8 @@ Your attention is your most valuable asset. Don't let anyone steal it from you.`
     rating: 4.7,
     likes: 3200,
     readTime: "15 min read",
-    excerpt: "Turn your passion into profit with strategies that actually work in 2024...",
+    excerpt:
+      "Turn your passion into profit with strategies that actually work in 2024...",
     story: `Forget everything you've been told about getting rich slowly. In today's digital economy, Gen Z has unprecedented opportunities to build wealth fast - if you know where to look.
 
 I started my first online business at 19 with $200 and a laptop. Three years later, I was making six figures. Here's exactly how I did it, and how you can too.
@@ -195,7 +200,7 @@ Build your personal brand simultaneously. Document your journey on social media.
 
 Most importantly, think in systems, not goals. Don't just aim to make $10k - build a system that can generate $10k monthly. Focus on recurring revenue streams and passive income.
 
-The opportunity is there. The tools are free or cheap. The only question is: will you take action, or will you keep scrolling?`
+The opportunity is there. The tools are free or cheap. The only question is: will you take action, or will you keep scrolling?`,
   },
   {
     id: "8",
@@ -235,27 +240,31 @@ She turned off her phone and walked outside. For the first time in years, she sa
 
 When she finally turned her phone back on, there was one message waiting: "I'm sorry I disappeared. I'm okay now. Can we talk?"
 
-This time, instead of typing back immediately, Zoe closed the app and booked a flight to Portland. Some conversations, she realized, were meant to happen face to face.`
-  }
+This time, instead of typing back immediately, Zoe closed the app and booked a flight to Portland. Some conversations, she realized, were meant to happen face to face.`,
+  },
 ];
 
 // Function to get daily reader count (simulates real-time data)
 export const getDailyReaderCount = (storyId) => {
   const today = new Date();
-  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-  
+  const dayOfYear = Math.floor(
+    (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+  );
+
   // Create a seed based on story ID and day to ensure consistent daily counts
   const seed = parseInt(storyId) * dayOfYear;
   const baseCount = 800 + (seed % 2000); // Base count between 800-2800
   const variation = Math.sin(seed) * 200; // Add some daily variation
-  
+
   return Math.floor(baseCount + variation);
 };
 
 // Function to get a random story of the day
 export const getStoryOfTheDay = () => {
   const today = new Date();
-  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+  const dayOfYear = Math.floor(
+    (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+  );
   const storyIndex = dayOfYear % booksData.length;
   return booksData[storyIndex];
 };

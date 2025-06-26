@@ -47,6 +47,8 @@ import {
   setUserPreferences,
   trackError 
 } from '../utils/analytics';
+import { likeBook, getBookLikes } from "../lib/firebaseFunctions";
+
 
 // Import refactored components
 import StoryReaderNavbar from "./story-reader-components/StoryReaderNavbar";
@@ -270,15 +272,32 @@ export default function StoryReader() {
     });
   };
 
-  const handleLike = () => {
-    if (!hasLiked) {
+  useEffect(() => {
+    const fetchLikes = async () => {
+      const likes = await getBookLikes(book.id);
+      setLikeCount(likes);
+  
+      const liked = localStorage.getItem(`liked-${book.id}`);
+      if (liked) setHasLiked(true);
+    };
+  
+    fetchLikes();
+  }, [book.id]);
+  // Handle like button click
+  // This function updates the like count in Firebase and localStorage  
+
+  const handleLike = async () => {
+    if (hasLiked) return;
+
+    const success = await likeBook(book.id); // updates Firebase + localStorage
+    if (success) {
       setHasLiked(true);
       setLikeCount((prev) => prev + 1);
       setShowLikeAnimation(true);
       setTimeout(() => setShowLikeAnimation(false), 1000);
-      
-      // Track like interaction
-      trackUserInteraction('like', book, { like_count: likeCount + 1 });
+
+      // Optional: Track interaction
+      trackUserInteraction("like", book, { like_count: likeCount + 1 });
     }
   };
 
